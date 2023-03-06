@@ -1,4 +1,4 @@
-//to handle uncaughtException errors
+//to handle uncaughtException errors Basuoi
 process.on("uncaughtException", (err) => {
   console.log("uncaughtException", err.stack);
 });
