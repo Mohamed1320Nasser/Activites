@@ -41,7 +41,7 @@ app.use("/sendEmail", require("./src/component/emails/email.routes"));
 
 // end point to tell us wrong path
 app.all("*", (req, res, next) => {
-  next(new AppError(`cannot get this route ${req.originalUrl} in her `, 404));
+  next(new AppError(`cannot mohamed get this route ${req.originalUrl} in her `, 404));
 });
 //global Error handling middleware
 app.use(globalMiddelwearErr);
