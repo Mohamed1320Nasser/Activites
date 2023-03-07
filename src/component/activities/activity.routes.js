@@ -11,7 +11,7 @@ const {
 } = require("./activity.service");
 
 const router = require("express").Router();
-let fields=[{ name: 'coverImage', maxCount: 1 }, { name: 'images', maxCount: 5 }]
+let fields=[{ name: 'coverImage', maxCount: 1 }, { name: 'images', maxCount: 4 }]
 router.route("/").post(fileMixUpload(fields,"activity"),creatActivity).get(getActivities);
 router
   .route("/:id")

@@ -27,12 +27,12 @@ const schema = new Schema(
       required: true,
       minlength: 20,
     },
-    goles_ar:{
+    goals_ar:{
       type: String,
       required: true,
       minlength: 20,
     },
-    goles_en:{
+    goals_en:{
       type: String,
       required: true,
       minlength: 20,

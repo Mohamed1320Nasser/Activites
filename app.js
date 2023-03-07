@@ -28,10 +28,7 @@ if (process.env.MODE_ENV === "development") {
 // module dotenv to save the improtant data
 const port = process.env.PORT;
 // routes
-app.use(
-  "/youthActivities",
-  require("./src/component/YouthWelfare/YouthWelfare.routes")
-);
+app.use(require("./src/component/HomePage/Home.routes"));
 
 app.use("/send-email", require("./src/component/emails/email.routes"));
 app.use("/activities", require("./src/component/activities/activity.routes"));
@@ -42,7 +39,12 @@ app.use("/enroll", require("./src/component/enroll/enroll.routes"));
 
 // end point to tell us wrong path
 app.all("*", (req, res, next) => {
-  next(new AppError(`cannot mohamed get this route ${req.originalUrl} in her `, 404));
+  next(
+    new AppError(
+      `cannot mohamed get this route ${req.originalUrl} in her `,
+      404
+    )
+  );
 });
 //global Error handling middleware
 app.use(globalMiddelwearErr);

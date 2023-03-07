@@ -33,4 +33,4 @@ const schema = new Schema(
   },
   { timestamps: true }
 );
-module.exports = model("youthWelfare", schema);
+module.exports = model("homePage", schema);

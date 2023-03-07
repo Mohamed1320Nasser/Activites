@@ -54,7 +54,7 @@ exports.protectedRoutes = catchAsyncError(async (req, res, next) => {
   if (user.passwordChangeAt) {
     let changePassword = parseInt(user.passwordChangeAt.getTime() / 100);
     if (changePassword > decoded.iat)
-      return next(new AppError("password changed", 401));
+      return next(new AppError("password changed please login agine", 401));
   }
   req.user = user;
 
