@@ -32,12 +32,13 @@ app.use(
   "/youthActivities",
   require("./src/component/YouthWelfare/YouthWelfare.routes")
 );
+
+app.use("/send-email", require("./src/component/emails/email.routes"));
 app.use("/activities", require("./src/component/activities/activity.routes"));
 app.use("/categories", require("./src/component/Categories/category.routes"));
 app.use("/users", require("./src/component/user/user.routes"));
 app.use("/trips", require("./src/component/trips/trips.routes"));
 app.use("/enroll", require("./src/component/enroll/enroll.routes"));
-app.use("/sendEmail", require("./src/component/emails/email.routes"));
 
 // end point to tell us wrong path
 app.all("*", (req, res, next) => {

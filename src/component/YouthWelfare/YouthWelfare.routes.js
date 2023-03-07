@@ -1,12 +1,11 @@
-const { uploadSingleImage } = require("../../utils/uploadFile");
+const { uploadSingleImage, fileMixUpload } = require("../../utils/uploadFile");
 const {
   creatYouthWelfare,
   getYouthWelfare,
   updateYouthWelfare,
-  deleteYouthWelfare,
 } = require("./YouthWelfare.service");
-
+let fields=[{ name: 'coverImage', maxCount: 1 }, { name: 'images', maxCount: 5 }]
 const router = require("express").Router();
-router.route("/").post(creatYouthWelfare).get(getYouthWelfare);
-router.route("/:id").put(updateYouthWelfare).delete(deleteYouthWelfare);
+router.route("/").post(fileMixUpload(fields,"category"),creatYouthWelfare).get(getYouthWelfare);
+router.route("/:id").put(updateYouthWelfare)
 module.exports = router;

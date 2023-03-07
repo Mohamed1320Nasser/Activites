@@ -32,7 +32,7 @@ const schema = new Schema(
       required: true,
       minlength: 20,
     },
-    goles_ar:{
+    goles_en:{
       type: String,
       required: true,
       minlength: 20,
@@ -40,7 +40,10 @@ const schema = new Schema(
     coverImage: String,
     cloudinary_id: String,
     images: [],
-    numRecorded: Number,
+    numRecorded:{
+      type: Number,
+      default:0
+    },
     averageRating: {
       type: Number,
       min: [1, "ratingAvarege must be grater than or equal 1"],

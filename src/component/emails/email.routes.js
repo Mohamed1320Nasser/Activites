@@ -1,8 +1,8 @@
 const { sendNotification } = require("./notification.emai");
 
 const router = require("express").Router();
-
-   router.get("/",sendNotification)
+   
+   router.post("/",sendNotification)
 
 
 

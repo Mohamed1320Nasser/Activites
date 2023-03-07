@@ -27,6 +27,9 @@ const schema = new Schema(
       required: true,
       minlength: 20,
     },
+    coverImage: String,
+    cloudinary_id: String,
+    images: [],
   },
   { timestamps: true }
 );

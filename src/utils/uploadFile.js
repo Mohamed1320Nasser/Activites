@@ -1,11 +1,14 @@
 const multer = require('multer');
 const AppError = require("./AppError")
-const cloudinary = require('cloudinary').v2;
+const mimeTypes= require("mime-types")
+
 
 let options = (folderName) => {
   const storage = multer.diskStorage({});
   function fileFilter(req, file, cb) {
-    if (file.mimetype.startsWith("image")) {
+   const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+   const fileMimeType = mimeTypes.lookup(file.originalname);
+    if (allowedMimeTypes.includes(fileMimeType) )  {
       cb(null, true);
     } else {
       cb(new AppError("image only", 400), true);

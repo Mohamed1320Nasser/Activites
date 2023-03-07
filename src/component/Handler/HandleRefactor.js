@@ -7,24 +7,34 @@ const { cloudinary } = require("../../utils/cludinary");
 // creat Document
 exports.creatOne = (model, filedName) => {
   return catchAsyncError(async (req, res, next) => {
+    console.log("test One");
     if (req.files) {
-
       const result = await cloudinary.uploader.upload(
         req.files.coverImage[0].path,
-        { folder: filedName }
+        { folder: filedName ,resource_type:"image"}
       );
-    
+
+      console.log("test two");
       req.body.coverImage = result.secure_url;
       req.body.cloudinary_id = result.public_id;
       let imgs = [];
       for (const file of req.files.images) {
-        const result = await cloudinary.uploader.upload(file.path, {
+        console.log("test three");
+       await cloudinary.uploader.upload(file.path, {
           folder: filedName,
+          resource_type:"image",
+          transformation:[
+            {width:1000,height:1000,crop:"limit"},
+            {byted_limit:10000}
+          ]
+        }).then((result) => {
+          res.json(result);
+          imgs.push({ url: result.secure_url, cloudinary_id: result.public_id });
+        }).catch((err) => {
+          console.log(err);
         });
-        imgs.push({ url: result.secure_url, cloudinary_id: result.public_id });
       }
       req.body.images = imgs;
-      console.log(imgs);
     } else {
       const { secure_url } = await cloudinary.uploader.upload(req.file.path, {
         folder: filedName,
