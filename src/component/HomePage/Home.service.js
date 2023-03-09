@@ -1,7 +1,7 @@
 const HomePageModel = require("./Home.model");
 const refactor = require("../Handler/HandleRefactor");
 // to creat a description and name of the youth Activity
-module.exports.creatYouthWelfare = refactor.creatOne(
+module.exports.creatYouthWelfare = refactor.createOne(
   HomePageModel,
   "HomePage"
 );

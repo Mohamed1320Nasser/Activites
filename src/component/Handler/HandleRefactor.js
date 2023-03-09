@@ -1,35 +1,39 @@
-
 const AppError = require("../../utils/AppError");
 const { catchAsyncError } = require("../../utils/catchAsyncErr");
-const { cloudinary } = require("../../utils/cludinary");
-
+const {
+  uploadToCloudinary,
+  deleteFromCloudinary,
+  cloudinary,
+} = require("../../utils/cludinary");
 
 // creat Document
-exports.creatOne = (model, filedName) => {
+exports.createOne = (model, fieldName) => {
   return catchAsyncError(async (req, res, next) => {
     if (req.files) {
-      const result = await cloudinary.uploader.upload(
-        req.files.coverImage[0].path,
-        { folder: `Youth Welfare/${filedName}` ,resource_type:"image", }
-      );
-      req.body.coverImage = result.secure_url;
-      req.body.cloudinary_id = result.public_id;
+      const { coverImage, images } = req.files;
+      //upload cover image
+      const coverImageUlr = await uploadToCloudinary(coverImage[0], fieldName);
+      req.body.coverImage = coverImageUlr.secure_url;
+      req.body.cloudinary_id = coverImageUlr.public_id;
 
-      let imgs = await Promise.all(req.files.images.map(async (file) => {
-        if (file.size > 500000) {
-          return  next(new AppError("File size should be less than 500kb", 4))
-        }
-        const result = await cloudinary.uploader.upload(file.path, {
-            folder: `Youth Welfare/${filedName}`,
-            resource_type: "image",
+      const promises = [];
+      for (let image of images) {
+        const promise = uploadToCloudinary(image, fieldName);
+        promises.push(promise);
+      }
+      try {
+        const result = [];
+        const imagesPromise = await Promise.allSettled(promises);
+        imagesPromise.map((image) => {
+          result.push({ url: image.value.secure_url, cloudinary_id: image.value.public_id });
         });
-        return { url: result.secure_url, cloudinary_id: result.public_id };
-    }));
-      req.body.images = imgs;
+        req.body.images = result;
+        console.log(result);
+      } catch (err) {
+        console.log(err);
+      }
     } else {
-      const { secure_url } = await cloudinary.uploader.upload(req.file.path, {
-        folder: `Youth Welfare/${filedName}`,
-      });
+      const { secure_url } = await uploadToCloudinary(req.file, fieldName);
       req.body.image = secure_url;
     }
     const document = new model(req.body);
@@ -37,6 +41,7 @@ exports.creatOne = (model, filedName) => {
     res.status(200).json(document);
   });
 };
+
 // get all Documents
 exports.getAll = (model) => {
   return catchAsyncError(async (req, res, next) => {
@@ -143,14 +148,12 @@ exports.deleteOne = (model) => {
     const { id } = req.params;
 
     const Document = await model.findById(id);
-    await cloudinary.uploader.destroy(Document.cloudinary_id);
+    await deleteFromCloudinary(Document);
     if (Document.images) {
       const public_id = [];
       Document.images.forEach((image) => public_id.push(image.cloudinary_id));
       await cloudinary.api.delete_resources(public_id, (err, result) => {
-        if (err) {
-          new AppError(err, 400);
-        }
+        if (err) return next(new AppError(err, 400));
       });
     }
     await model.findByIdAndDelete(id, {

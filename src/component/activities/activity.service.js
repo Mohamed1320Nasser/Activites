@@ -3,7 +3,7 @@ const ActivityModel = require("./activity.model");
 const refactor=require("../Handler/HandleRefactor")
 
 // to creat Activity
-module.exports.creatActivity =  refactor.creatOne(ActivityModel,"activity");
+module.exports.creatActivity =  refactor.createOne(ActivityModel,"activity");
 // to get the All Activities {description and name} of youth Activity
 exports.getActivities = refactor.getAll(ActivityModel);
 

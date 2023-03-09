@@ -2,7 +2,7 @@ const CategoryModel = require("./category.model");
 const refactor = require("../Handler/HandleRefactor");
 
 // to creat Category
-module.exports.creatCategory = refactor.creatOne(CategoryModel, "category");
+module.exports.creatCategory = refactor.createOne(CategoryModel, "category");
 
 // to get the All Categories {description and name} of youth Category
 module.exports.getCategories = refactor.getAll(CategoryModel);

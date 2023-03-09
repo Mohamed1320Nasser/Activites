@@ -4,7 +4,7 @@ const TripModel = require("./trips.model");
 const refactor=require("../Handler/HandleRefactor")
 
 // to creat Trip
-module.exports.creatTrip = refactor.creatOne(TripModel,"trips");
+module.exports.creatTrip = refactor.createOne(TripModel,"trips");
 
 // to get the All Trips {description and name} of youth Trip
 exports.getTrips = refactor.getAll(TripModel);
