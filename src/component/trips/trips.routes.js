@@ -1,4 +1,5 @@
 const { uploadSingleImage } = require("../../utils/uploadFile");
+const { protectedRoutes, allowedTo } = require("../student/student.auth");
 const { TripsValidation } = require("../validations/trips.validate");
 const {
   creatTrip,
@@ -9,6 +10,19 @@ const {
 } = require("./trips.service");
 
 const router = require("express").Router();
-router.route("/").post(TripsValidation,uploadSingleImage("image","trips"),creatTrip).get(getTrips);
-router.route("/:id").get(getٍSpcificTrip).put(updateTrip).delete(deleteTrip);
+router
+  .route("/")
+  .post(
+    protectedRoutes,
+    allowedTo("admin"),
+    TripsValidation,
+    uploadSingleImage("image", "trips"),
+    creatTrip
+  )
+  .get(getTrips);
+router
+  .route("/:id")
+  .get(getٍSpcificTrip)
+  .put(protectedRoutes, allowedTo("admin"), updateTrip)
+  .delete(protectedRoutes, allowedTo("admin"), deleteTrip);
 module.exports = router;

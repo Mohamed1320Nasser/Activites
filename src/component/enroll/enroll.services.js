@@ -21,7 +21,7 @@ exports.enrollActivity = catchAsyncError(async (req, res, next) => {
       res.status(200).json("you enroll more than 3 activities");
     }
   } else {
-    next(new AppError("Studen not found", 404));
+   return next(new AppError("Studen not found", 404));
   }
 });
 
@@ -40,7 +40,7 @@ exports.cancel = catchAsyncError(async (req, res, next) => {
     );
     res.status(200).json({ message: "cancel", result: cancelStuden });
   } else {
-    next(new AppError("Studen not found", 404));
+    return  next(new AppError("Studen not found", 404));
   }
 });
 
@@ -60,6 +60,6 @@ exports.enrollTrip = catchAsyncError(async (req, res, next) => {
     );
     res.status(200).json({ message: "success", result: enrollStuden });
   } else {
-    next(new AppError("Studen not found", 404));
+   return next(new AppError("Studen not found", 404));
   }
 });

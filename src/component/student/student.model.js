@@ -41,8 +41,8 @@ const schema = Schema(
     profileImage: String,
     role: {
       type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      enum: ["student", "admin"],
+      default: "student",
     },
     Isverified: {
       type: Boolean,
@@ -55,7 +55,7 @@ const schema = Schema(
     },
     Specialization_en: {
       type: String,
-      required: [true, "user Specialization requires"],
+      required: [true, "student Specialization requires"],
     },
 
     activity: [

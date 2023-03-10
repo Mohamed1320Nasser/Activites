@@ -1,4 +1,5 @@
-const {  fileMixUpload, uploadSingleImage } = require("../../utils/uploadFile");
+const { fileMixUpload, uploadSingleImage } = require("../../utils/uploadFile");
+const { protectedRoutes, allowedTo } = require("../student/student.auth");
 const { CategoryValidation } = require("../validations/category.validat");
 const {
   creatCategory,
@@ -11,13 +12,33 @@ const {
 } = require("./category.service");
 
 const router = require("express").Router();
-let fields=[{ name: 'coverImage', maxCount: 1 }, { name: 'images', maxCount: 5 }]
-router.route("/").post(CategoryValidation,fileMixUpload(fields,"category"),creatCategory).get(getCategories);
+let fields = [
+  { name: "coverImage", maxCount: 1 },
+  { name: "images", maxCount: 5 },
+];
+router
+  .route("/")
+  .post(
+    protectedRoutes,
+    allowedTo("admin"),
+    CategoryValidation,
+    fileMixUpload(fields, "category"),
+    creatCategory
+  )
+  .get(getCategories);
 router
   .route("/:id")
   .get(getٍSpcificCategory)
-  .put(updateCategory)
-  .delete(deleteCategory)
-   router.put("/removeimage/:id",removeImageofromCategory) .put("/addimage/:id",uploadSingleImage("image","category"),AddImageoToCategory)
+  .put(protectedRoutes, allowedTo("admin"), updateCategory)
+  .delete(protectedRoutes, allowedTo("admin"), deleteCategory);
+router
+  .put("/removeimage/:id", removeImageofromCategory)
+  .put(
+    "/addimage/:id",
+    protectedRoutes,
+    allowedTo("admin"),
+    uploadSingleImage("image", "category"),
+    AddImageoToCategory
+  );
 
 module.exports = router;

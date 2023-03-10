@@ -1,5 +1,6 @@
-
 const { fileMixUpload, uploadSingleImage } = require("../../utils/uploadFile");
+const { protectedRoutes, allowedTo } = require("../student/student.auth");
+const { ActivityValidation } = require("../validations/activity.validate");
 const {
   creatActivity,
   getActivities,
@@ -11,14 +12,38 @@ const {
 } = require("./activity.service");
 
 const router = require("express").Router();
-let fields=[{ name: 'coverImage', maxCount: 1 }, { name: 'images', maxCount: 4 }]
-router.route("/").post(fileMixUpload(fields,"activity"),creatActivity).get(getActivities);
+let fields = [
+  { name: "coverImage", maxCount: 1 },
+  { name: "images", maxCount: 4 },
+];
+router
+  .route("/")
+  .post(
+    protectedRoutes,
+    allowedTo("admin"),
+    ActivityValidation,
+    fileMixUpload(fields, "activity"),
+    creatActivity
+  )
+  .get(getActivities);
 router
   .route("/:id")
   .get(getٍSpcificActivity)
-  .put(updateActivity)
-  .delete(deleteActivity);
-  router.put("/removeImage/:id",removeImageofromActivity).put("/addImage/:id",uploadSingleImage("image","activity"),AddImageoToActivity)
+  .put(protectedRoutes, allowedTo("admin"), updateActivity)
+  .delete(protectedRoutes, allowedTo("admin"), deleteActivity);
+router
+  .put(
+    "/removeImage/:id",
+    protectedRoutes,
+    allowedTo("admin"),
+    removeImageofromActivity
+  )
+  .put(
+    "/addImage/:id",
+    protectedRoutes,
+    allowedTo("admin"),
+    uploadSingleImage("image", "activity"),
+    AddImageoToActivity
+  );
 
-//   router.route("/:id").put(updateYouthWelfare).delete(deleteYouthWelfare);
 module.exports = router;

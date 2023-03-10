@@ -27,22 +27,12 @@ const schema = new Schema(
       required: true,
       minlength: 20,
     },
-    // goals_ar:{
-    //   type: String,
-    //   required: true,
-    //   minlength: 20,
-    // },
-    // goals_en:{
-    //   type: String,
-    //   required: true,
-    //   minlength: 20,
-    // },
     coverImage: String,
     cloudinary_id: String,
     images: [],
-    numRecorded:{
+    numRecorded: {
       type: Number,
-      default:0
+      default: 0,
     },
     averageRating: {
       type: Number,

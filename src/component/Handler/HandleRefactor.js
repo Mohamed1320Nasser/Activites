@@ -29,7 +29,10 @@ exports.createOne = (model, fieldName) => {
         });
         req.body.images = result
       } catch (err) {
-        console.log(err);
+        result.map(async (image) => {
+          await deleteFromCloudinary(image)
+        })
+        return next(new AppError(`Something went wrong ${err}` , 500));
       }
     } else {
       const { secure_url } = await uploadToCloudinary(req.file, fieldName);
@@ -136,7 +139,7 @@ exports.addImage = (model, folder) => {
       { new: true }
     );
     await Document.save();
-    !Document && next(new AppError("Document not found", 404));
+    !Document &&  next(new AppError("Document not found", 404));
     Document && res.status(200).json({ result: Document });
   });
 };
