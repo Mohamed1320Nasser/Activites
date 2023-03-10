@@ -50,13 +50,13 @@ exports.getAll = (model) => {
     if (req.query.lang == "en") {
       const Document = await model
         .find({})
-        .select("-title_ar -description_ar -goles_ar -place_ar");
+        .select("-title_ar -description_ar -goles_ar -place_ar -name_ar");
       !Document && next(new AppError("Document not found", 404));
       Document && res.status(200).json({ result: Document });
     } else {
       const Document = await model
         .find({})
-        .select("-title_en -description_en -goles_en -place_en");
+        .select("-title_en -description_en -goles_en -place_en -name_en");
       !Document && next(new AppError("غير موجود", 404));
       Document && res.status(200).json({ result: Document });
     }
@@ -70,13 +70,13 @@ exports.getOne = (model) => {
     if (req.query.lang == "en") {
       const Decument = await model
         .findById(id)
-        .select("-title_ar -description_ar -goles_ar -place_ar");
+        .select("-title_ar -description_ar -goles_ar -place_ar -name_ar");
       !Decument && next(new AppError("not found ", 404));
       Decument && res.status(200).json({ result: Decument });
     } else {
       const Decument = await model
         .findById(id)
-        .select("-title_en -description_en -goles_en -place_en");
+        .select("-title_en -description_en -goles_en -place_en -name_en");
       !Decument && next(new AppError("غير موجود", 404));
       Decument && res.status(200).json({ result: Decument });
     }
