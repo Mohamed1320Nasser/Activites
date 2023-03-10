@@ -1,46 +1,46 @@
 const {Types} = require("mongoose");
 const AppError = require("../../utils/AppError");
 const { catchAsyncError } = require("../../utils/catchAsyncErr");
-const UserModel = require("../user/user.model");
+const StudenModel = require("../student/student.model");
 
 exports.enrollActivity = catchAsyncError(async (req, res, next) => {
   const id = Types.ObjectId(req.params);
-  const userId = req.user._id;
-  const User = await UserModel.findById(userId);
-  if (User) {
-    if (User.activity.length < 3) {
-      const enrollUser = await UserModel.findByIdAndUpdate(
-        userId,
+  const StudenId = req.Studen._id;
+  const Studen = await StudenModel.findById(StudenId);
+  if (Studen) {
+    if (Studen.activity.length < 3) {
+      const enrollStuden = await StudenModel.findByIdAndUpdate(
+        StudenId,
         {
           $addToSet: { activity: id },
         },
         { new: true }
       );
-      res.status(200).json({ message: "added", result: enrollUser });
+      res.status(200).json({ message: "added", result: enrollStuden });
     } else {
       res.status(200).json("you enroll more than 3 activities");
     }
   } else {
-    next(new AppError("User not found", 404));
+    next(new AppError("Studen not found", 404));
   }
 });
 
 //  Cancellation of activity enrolled
 exports.cancel = catchAsyncError(async (req, res, next) => {
   const id = req.params.id;
-  const userId = req.user._id;
-  const User = await UserModel.findById(userId);
-  if (User) {
-    const cancelUser = await UserModel.findByIdAndUpdate(
-      userId,
+  const StudenId = req.Studen._id;
+  const Studen = await StudenModel.findById(StudenId);
+  if (Studen) {
+    const cancelStuden = await StudenModel.findByIdAndUpdate(
+      StudenId,
       {
         $pull: { activity: id },
       },
       { new: true }
     );
-    res.status(200).json({ message: "cancel", result: cancelUser });
+    res.status(200).json({ message: "cancel", result: cancelStuden });
   } else {
-    next(new AppError("User not found", 404));
+    next(new AppError("Studen not found", 404));
   }
 });
 
@@ -48,18 +48,18 @@ exports.cancel = catchAsyncError(async (req, res, next) => {
 
 exports.enrollTrip = catchAsyncError(async (req, res, next) => {
   const id = Types.ObjectId(req.params.id);
-  const userId = req.user._id;
-  const User = await UserModel.findById(userId);
-  if (User) {
-    const enrollUser = await UserModel.findByIdAndUpdate(
-      userId,
+  const StudenId = req.Studen._id;
+  const Studen = await StudenModel.findById(StudenId);
+  if (Studen) {
+    const enrollStuden = await StudenModel.findByIdAndUpdate(
+      StudenId,
       {
         $addToSet: { trip: id },
       },
       { new: true }
     );
-    res.status(200).json({ message: "success", result: enrollUser });
+    res.status(200).json({ message: "success", result: enrollStuden });
   } else {
-    next(new AppError("User not found", 404));
+    next(new AppError("Studen not found", 404));
   }
 });

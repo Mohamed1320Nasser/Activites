@@ -2,7 +2,7 @@ const { Schema, model, Types } = require("mongoose");
 
 const schema = new Schema(
   {
-    title: {
+    title_ar: {
       type: String,
       required: true,
       trim: true,

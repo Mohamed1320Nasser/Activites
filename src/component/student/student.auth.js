@@ -1,4 +1,4 @@
-const UserModel = require("./user.model");
+const StudentModel = require("./student.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
@@ -7,8 +7,8 @@ const AppError = require("../../utils/AppError");
 const { sendEmail } = require("../emails/verification.email");
 
 module.exports.SignUp = catchAsyncError(async (req, res, next) => {
-  const IsUser = await UserModel.findOne({ email: req.body.email });
-  if (IsUser) return next(new AppError("User is already exists", 401));
+  const IsStudent = await StudentModel.findOne({ email: req.body.email });
+  if (IsStudent) return next(new AppError("Student is already exists", 401));
   req.body.emailToken=crypto.randomBytes(16).toString('hex');
   if(req.file){
   const { secure_url } = await cloudinary.uploader.upload(req.file.path, {
@@ -16,17 +16,17 @@ module.exports.SignUp = catchAsyncError(async (req, res, next) => {
   });
   req.body.image= secure_url
 }
-  const User = new UserModel(req.body);
-  await User.save();
-  sendEmail(User,req.headers.host);
-  res.status(200).json( {message:"verification email is sent to your email account",User} );
+  const Student = new StudentModel(req.body);
+  await Student.save();
+  sendEmail(Student,req.headers.host);
+  res.status(200).json( {message:"verification email is sent to your email account",Student} );
 });
 exports.verifyEmail= catchAsyncError(async (req, res, next) => {
   console.log("test");
     const {token} = req.query
-    const user= await UserModel.findOne({emailToken:token});
-if(user){
-    await UserModel.findByIdAndUpdate(user._id,{emailToken:null,Isverified:true});
+    const Student= await StudentModel.findOne({emailToken:token});
+if(Student){
+    await StudentModel.findByIdAndUpdate(Student._id,{emailToken:null,Isverified:true});
 
 res.status(200).json("email verified");
 }else{
@@ -34,13 +34,13 @@ res.status(200).json("email verified");
 }
 })
 module.exports.Signin = catchAsyncError(async (req, res, next) => {
-  const User = await UserModel.findOne({ email: req.body.email });
-  if (!User || !(await bcrypt.compare(req.body.password, User.password)))
+  const Student = await StudentModel.findOne({ email: req.body.email });
+  if (!Student || !(await bcrypt.compare(req.body.password, Student.password)))
     return next(new AppError("incorrect email or password", 401));
 
-   if(User.Isverified == false  )  return next(new AppError("email is not verified", 401));
+   if(Student.Isverified == false  )  return next(new AppError("email is not verified", 401));
   const token = jwt.sign(
-    { userId: User._id, name: User.name },
+    { StudentId: Student._id, name: Student.name },
     process.env.secrit_key
   );
   res.status(200).json({ token });
@@ -49,20 +49,20 @@ exports.protectedRoutes = catchAsyncError(async (req, res, next) => {
   const { token } = req.headers;
   if (!token) return next(new AppError("token inprovided", 401));
   let decoded = jwt.verify(token, process.env.secrit_key);
-  const user = await UserModel.findById(decoded.userId);
-  if (!user) return next(new AppError("User not found", 401));
-  if (user.passwordChangeAt) {
-    let changePassword = parseInt(user.passwordChangeAt.getTime() / 100);
+  const Student = await StudentModel.findById(decoded.StudentId);
+  if (!Student) return next(new AppError("Student not found", 401));
+  if (Student.passwordChangeAt) {
+    let changePassword = parseInt(Student.passwordChangeAt.getTime() / 100);
     if (changePassword > decoded.iat)
       return next(new AppError("password changed please login agine", 401));
   }
-  req.user = user;
+  req.Student = Student;
 
   next();
 });
 exports.allowedTo = (...roles) => {
   return catchAsyncError(async (req, res, next) => {
-    if (!roles.includes(req.user.role))
+    if (!roles.includes(req.Student.role))
       return next(new AppError("You don't have permission to do this", 401));
     next();
   });

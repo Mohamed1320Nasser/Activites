@@ -1,4 +1,5 @@
 const { uploadSingleImage } = require("../../utils/uploadFile");
+const { TripsValidation } = require("../validations/trips.validate");
 const {
   creatTrip,
   getTrips,
@@ -8,8 +9,6 @@ const {
 } = require("./trips.service");
 
 const router = require("express").Router();
-router.route("/").post(uploadSingleImage("image","trips"),creatTrip).get(getTrips);
+router.route("/").post(TripsValidation,uploadSingleImage("image","trips"),creatTrip).get(getTrips);
 router.route("/:id").get(getٍSpcificTrip).put(updateTrip).delete(deleteTrip);
-
-//   router.route("/:id").put(updateYouthWelfare).delete(deleteYouthWelfare);
 module.exports = router;

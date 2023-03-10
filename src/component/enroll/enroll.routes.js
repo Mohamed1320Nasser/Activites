@@ -1,4 +1,5 @@
-const { protectedRoutes } = require("../user/user.auth");
+
+const { protectedRoutes } = require("../student/student.auth");
 const { enrollActivity, cancel, enrollTrip } = require("./enroll.services");
 
 const router = require("express").Router();

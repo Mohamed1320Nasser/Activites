@@ -20,7 +20,6 @@ const globalMiddelwearErr = require("./src/utils/globalMiddelwearErr");
 // to determine is development mode or production mode
 let morgan = require("morgan");
 const AppError = require("./src/utils/AppError");
-const userModel = require("./src/component/user/user.model");
 if (process.env.MODE_ENV === "development") {
   app.use(morgan("dev"));
 }
@@ -33,7 +32,7 @@ app.use(require("./src/component/HomePage/Home.routes"));
 app.use("/send-email", require("./src/component/emails/email.routes"));
 app.use("/activities", require("./src/component/activities/activity.routes"));
 app.use("/categories", require("./src/component/Categories/category.routes"));
-app.use("/users", require("./src/component/user/user.routes"));
+app.use("/students", require("./src/component/student/student.routes"));
 app.use("/trips", require("./src/component/trips/trips.routes"));
 app.use("/enroll", require("./src/component/enroll/enroll.routes"));
 

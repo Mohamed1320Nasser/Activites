@@ -27,8 +27,7 @@ exports.createOne = (model, fieldName) => {
         imagesPromise.map((image) => {
           result.push({ url: image.value.secure_url, cloudinary_id: image.value.public_id });
         });
-        req.body.images = result;
-        console.log(result);
+        req.body.images = result
       } catch (err) {
         console.log(err);
       }

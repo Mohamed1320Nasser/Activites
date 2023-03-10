@@ -1,4 +1,4 @@
-const userModel = require("../user/user.model");
+const userModel = require("../student/student.model");
 const { Types } = require("mongoose");
 const { catchAsyncError } = require("../../utils/catchAsyncErr");
 const { transporter } = require("./transporter.email");
