@@ -28,11 +28,11 @@ router
     uploadSingleImage("image", "Student"),
     creatStudent
   )
-  .get(getStudents);
+  .get(protectedRoutes, allowedTo("admin"),getStudents);
 router.get("/verfy-email", verifyEmail);
 router
   .route("/:id")
-  .get(getٍSpcificStudent)
+  .get(getٍSpcificStudent ,protectedRoutes, allowedTo("admin","student"))
   .put(protectedRoutes, allowedTo("admin"), updateStudent)
   .delete(protectedRoutes, allowedTo("admin"), deleteStudent);
 router
