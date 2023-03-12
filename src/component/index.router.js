@@ -1,4 +1,5 @@
 const { dbConnection } = require("../dataBase/dbConnection");
+const AppError = require("../utils/AppError");
 const globalMiddelwearErr = require("../utils/globalMiddelwearErr");
 
 exports.appRouter = (app) => {
