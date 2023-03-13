@@ -1,6 +1,7 @@
 const { fileMixUpload, uploadSingleImage } = require("../../utils/uploadFile");
 const { protectedRoutes, allowedTo } = require("../student/student.auth");
 const { ActivityValidation } = require("../validations/activity.validate");
+const { validation } = require("../validations/validation.meddle");
 const {
   creatActivity,
   getActivities,
@@ -21,7 +22,6 @@ router
   .post(
     protectedRoutes,
     allowedTo("admin"),
-    ActivityValidation,
     fileMixUpload(fields, "activity"),
     creatActivity
   )
