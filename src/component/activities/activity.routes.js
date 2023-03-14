@@ -12,7 +12,7 @@ const {
   AddImageoToActivity,
 } = require("./activity.service");
 
-const router = require("express").Router();
+const router = require("express").Router({mergeParams: true});
 let fields = [
   { name: "coverImage", maxCount: 1 },
   { name: "images", maxCount: 4 },

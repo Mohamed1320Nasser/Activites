@@ -6,13 +6,12 @@ process.on("uncaughtException", (err) => {
 const bodyParser = require("body-parser");
 const express = require("express");
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 const cors = require("cors");
 app.use(cors());
 // module dotenv to save the improtant data
 require("dotenv").config({ path: "./config/.env" });
-
 
 const port = process.env.PORT;
 const { appRouter } = require("./src/component/index.router");

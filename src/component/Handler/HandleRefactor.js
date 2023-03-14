@@ -47,15 +47,20 @@ exports.createOne = (model, fieldName) => {
 // get all Documents
 exports.getAll = (model) => {
   return catchAsyncError(async (req, res, next) => {
+    let filter = {};
+    if(req.params.categoryId) {
+       filter = {category: req.params.categoryId};
+      console.log(req.params.categoryId);
+    }
     if (req.query.lang == "en") {
       const Document = await model
-        .find({})
+        .find(filter)
         .select("-title_ar -description_ar -goles_ar -place_ar -name_ar");
       !Document && next(new AppError("Document not found", 404));
       Document && res.status(200).json({ result: Document });
     } else {
       const Document = await model
-        .find({})
+        .find(filter)
         .select("-title_en -description_en -goles_en -place_en -name_en");
       !Document && next(new AppError("غير موجود", 404));
       Document && res.status(200).json({ result: Document });

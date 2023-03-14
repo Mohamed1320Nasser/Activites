@@ -10,8 +10,11 @@ const {
   removeImageofromCategory,
   AddImageoToCategory,
 } = require("./category.service");
-
+const activities =require("../activities/activity.routes")
 const router = require("express").Router();
+
+    router.use("/:categoryId/activities",activities)
+
 let fields = [
   { name: "coverImage", maxCount: 1 },
   { name: "images", maxCount: 5 },
