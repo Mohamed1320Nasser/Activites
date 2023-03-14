@@ -18,7 +18,7 @@ exports.enrollActivity = catchAsyncError(async (req, res, next) => {
       );
       res.status(200).json({ message: "added", result: enrollStuden });
     } else {
-      res.status(200).json("you enroll more than 3 activities");
+      res.status(401).json("you enroll more than 3 activities");
     }
   } else {
    return next(new AppError("Studen not found", 404));

@@ -38,7 +38,6 @@ router
 router
   .post(
     "/signUp",
-    studentValidation,
     uploadSingleImage("image", "Student"),
     SignUp
   )

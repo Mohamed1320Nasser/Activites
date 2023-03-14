@@ -69,7 +69,7 @@ exports.deleteStudent = catchAsyncError(async (req, res) => {
 });
 
 module.exports.ChangePass = catchAsyncError(async (req, res) => {
-  const { oldPassword, newPassword } = req.body;
+  const { oldPassword , newPassword } = req.body;
   const password = newPassword;
   let match = await bcrypt.compare(oldPassword, req.Student.password);
   if (match) {
