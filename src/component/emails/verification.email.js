@@ -8,7 +8,7 @@ exports.sendEmail = async (user, host) => {
     {
       from: '"Thebes Academy " <youthwelfare.thebes@gmail.com>', // sender address
       to: user.email,
-      subject: "Hello ✔",
+      subject: `Hello ${user.name_en}`, // Subject line,
       text: "Hello world?",
       html:`
       
@@ -68,7 +68,7 @@ exports.sendEmail = async (user, host) => {
                   please click the button to confirm your email address and
                   activate your account
                 </p>
-                <a href="https://${host}/studen/verfy-email?token=${user.emailToken}" class="button" style="
+                <a href="https://${host}/students/verfy-email?token=${user.emailToken}" class="button" style="
                       background-color: #289dcf;
                       color: #ffffff;
                       text-decoration: none;

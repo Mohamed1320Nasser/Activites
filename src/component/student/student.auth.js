@@ -27,6 +27,8 @@ module.exports.SignUp = catchAsyncError(async (req, res, next) => {
       Student,
     });
 });
+//https://localhost:3000/studen/verfy-email?token=5e0f3c1e098540e23a01f24cb3348c65
+//https://actitvityv1.onrender.com/studen/verfy-email?token=6ec84856e9a183ca33403912d0ddbbfe
 exports.verifyEmail = catchAsyncError(async (req, res, next) => {
   console.log("test");
   const { token } = req.query;
