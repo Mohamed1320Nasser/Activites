@@ -73,7 +73,6 @@ exports.getProfile = catchAsyncError(async (req, res, next) => {
 })
 exports.Signout = catchAsyncError(async (req, res, next) => {
   res.clearCookie("token");
-
   const expiredToken = jwt.sign({}, process.env.secrit_key, {
     expiresIn: "10",
   });

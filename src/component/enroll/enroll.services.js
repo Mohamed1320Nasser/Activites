@@ -4,10 +4,8 @@ const { catchAsyncError } = require("../../utils/catchAsyncErr");
 const StudentModel = require("../student/student.model");
 
 exports.enrollActivity = catchAsyncError(async (req, res, next) => {
-  console.log(req.Student);
   const id = Types.ObjectId(req.params.id);
   const StudentId = req.Student._id;
-  console.log(StudentId);
   const Student = await StudentModel.findById(StudentId);
   if (Student) {
     if (Student.activity.length < 3) {

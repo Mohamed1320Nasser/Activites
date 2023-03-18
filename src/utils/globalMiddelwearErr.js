@@ -11,7 +11,7 @@ let devMode = (err, res) => {
   res.status(err.statusCode);
   res.json({
     status: err.statusCode,
-    messsgae: err.message,
+    message: err.message,
     err,
     path: err.stack,
   });
@@ -20,6 +20,6 @@ let prodMode = (err, res) => {
   res.status(err.statusCode);
   res.json({
     status: err.statusCode,
-    messsgae: err.message,
+    message: err.message,
   });
 };

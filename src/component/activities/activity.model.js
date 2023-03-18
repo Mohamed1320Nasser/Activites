@@ -34,6 +34,19 @@ const schema = new Schema(
       type: Number,
       default: 0,
     },
+    ratings: [
+      {
+        studenId: {
+          type: Types.ObjectId,
+          ref: "user",
+        },
+        rate: {
+          type: Number,
+          min: [1, "rate must be grater than or equal 1"],
+          max: [5, "rate must be less than or equal  5"],
+        },
+      },
+    ],
     averageRating: {
       type: Number,
       min: [1, "ratingAvarege must be grater than or equal 1"],

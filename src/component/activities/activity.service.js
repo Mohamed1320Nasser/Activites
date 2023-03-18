@@ -24,12 +24,11 @@ exports.AddImageoToActivity = refactor.addImage(ActivityModel, "category");
 exports.deleteActivity = refactor.deleteOne(ActivityModel);
 
 exports.rateActivity = catchAsyncError(async (req, res, next) => {
-//   const activityId = req.params.activityId;
-//   const IsEnroll = req.Student.activity.includes(Types.ObjectId(activityId));
-
+  const activityId = req.params.activityId;
+  const IsEnroll = req.Student.activity.includes(Types.ObjectId(activityId));
 //   if (IsEnroll) {
-//     const actvity = ActivityModel.findById(activityId);
-
+//       const actvity = ActivityModel.findById(activityId);
+//      if(actvity.ratings.studentId)
 //     ActivityModel.findByIdAndUpdate(
 //       activityId,
 //       {
@@ -40,6 +39,7 @@ exports.rateActivity = catchAsyncError(async (req, res, next) => {
 //       },
 //       { new: true }
 //     );
-//   } else {
+//   } else { 
+//     return next(new AppError("You are not enrolled in this activity", 401))
 //   }
 });
