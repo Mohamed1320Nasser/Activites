@@ -55,16 +55,21 @@ module.exports.Signin = catchAsyncError(async (req, res, next) => {
     { StudentId: Student._id, name: Student.name },
     process.env.secrit_key
   );
-  res.status(200).json({ token });
+  res.status(200).json({ message:"Login success",token });
 });
 
 
-
 exports.getProfile = catchAsyncError(async (req, res, next) => {
-  const Student = await StudentModel.findById(req.Student._id);
+  if(req.query.lang == "en"){
+    const Student = await StudentModel.findById(req.Student._id).populate([{path:"activity",select:"title_en -_id"}]);
   if(!Student) return next(new AppError("Student not found", 404));
-  
   res.status(200).json({ Student });
+  }else{
+    const Student = await StudentModel.findById(req.Student._id).populate([{path:"activity",select:"title_ar  -_id"}]);
+    if(!Student) return next(new AppError("Student not found", 404));
+    res.status(200).json({ Student });
+  }
+  
 })
 exports.Signout = catchAsyncError(async (req, res, next) => {
   res.clearCookie("token");

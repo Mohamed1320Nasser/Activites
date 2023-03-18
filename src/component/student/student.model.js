@@ -2,15 +2,9 @@ const bcrypt = require("bcrypt");
 const { Schema, model, Types } = require("mongoose");
 const schema = Schema(
   {
-    name_ar: {
+    full_name: {
       type: String,
-      required: [true, "يجب ادخال الاسم"],
-      minlength: 2,
-      trim: true,
-    },
-    name_en: {
-      type: String,
-      required: [true, "user name requires"],
+      required: [true, "student name requires"],
       minlength: 2,
       trim: true,
     },
