@@ -36,7 +36,7 @@ const schema = new Schema(
     },
     ratings: [
       {
-        studenId: {
+        studentId: {
           type: Types.ObjectId,
           ref: "user",
         },

@@ -12,8 +12,9 @@ const {
   AddImageoToActivity,
   rateActivity,
 } = require("./activity.service");
-
+const enroll = require("../enroll/enroll.routes");
 const router = require("express").Router({mergeParams: true});
+router.use("/:id/enroll", enroll);
 let fields = [
   { name: "coverImage", maxCount: 1 },
   { name: "images", maxCount: 4 },
@@ -46,6 +47,6 @@ router
     uploadSingleImage("image", "activity"),
     AddImageoToActivity
   );
-  router.post("/:activityId/rate",protectedRoutes,allowedTo("student"),rateActivity)
+  router.post("/:id/rate",protectedRoutes,allowedTo("student"),rateActivity)
 
 module.exports = router;
