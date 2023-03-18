@@ -1,46 +1,48 @@
 const {Types} = require("mongoose");
 const AppError = require("../../utils/AppError");
 const { catchAsyncError } = require("../../utils/catchAsyncErr");
-const StudenModel = require("../student/student.model");
+const StudentModel = require("../student/student.model");
 
 exports.enrollActivity = catchAsyncError(async (req, res, next) => {
-  const id = Types.ObjectId(req.params);
-  const StudenId = req.Studen._id;
-  const Studen = await StudenModel.findById(StudenId);
-  if (Studen) {
-    if (Studen.activity.length < 3) {
-      const enrollStuden = await StudenModel.findByIdAndUpdate(
-        StudenId,
+  console.log(req.Student);
+  const id = Types.ObjectId(req.params.id);
+  const StudentId = req.Student._id;
+  console.log(StudentId);
+  const Student = await StudentModel.findById(StudentId);
+  if (Student) {
+    if (Student.activity.length < 3) {
+      const enrollStudent = await StudentModel.findByIdAndUpdate(
+        StudentId,
         {
           $addToSet: { activity: id },
         },
         { new: true }
       );
-      res.status(200).json({ message: "added", result: enrollStuden });
+      res.status(200).json({ message: "added", result: enrollStudent });
     } else {
       res.status(401).json("you enroll more than 3 activities");
     }
   } else {
-   return next(new AppError("Studen not found", 404));
+   return next(new AppError("Student not found", 404));
   }
 });
 
 //  Cancellation of activity enrolled
 exports.cancel = catchAsyncError(async (req, res, next) => {
   const id = req.params.id;
-  const StudenId = req.Studen._id;
-  const Studen = await StudenModel.findById(StudenId);
-  if (Studen) {
-    const cancelStuden = await StudenModel.findByIdAndUpdate(
-      StudenId,
+  const StudentId = req.Student._id;
+  const Student = await StudentModel.findById(StudentId);
+  if (Student) {
+    const cancelStudent = await StudentModel.findByIdAndUpdate(
+      StudentId,
       {
         $pull: { activity: id },
       },
       { new: true }
     );
-    res.status(200).json({ message: "cancel", result: cancelStuden });
+    res.status(200).json({ message: "cancel", result: cancelStudent });
   } else {
-    return  next(new AppError("Studen not found", 404));
+    return  next(new AppError("Student not found", 404));
   }
 });
 
@@ -48,18 +50,18 @@ exports.cancel = catchAsyncError(async (req, res, next) => {
 
 exports.enrollTrip = catchAsyncError(async (req, res, next) => {
   const id = Types.ObjectId(req.params.id);
-  const StudenId = req.Studen._id;
-  const Studen = await StudenModel.findById(StudenId);
-  if (Studen) {
-    const enrollStuden = await StudenModel.findByIdAndUpdate(
-      StudenId,
+  const StudentId = req.Student._id;
+  const Student = await StudentModel.findById(StudentId);
+  if (Student) {
+    const enrollStudent = await StudentModel.findByIdAndUpdate(
+      StudentId,
       {
         $addToSet: { trip: id },
       },
       { new: true }
     );
-    res.status(200).json({ message: "success", result: enrollStuden });
+    res.status(200).json({ message: "success", result: enrollStudent });
   } else {
-   return next(new AppError("Studen not found", 404));
+   return next(new AppError("Student not found", 404));
   }
 });

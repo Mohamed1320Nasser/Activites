@@ -57,6 +57,15 @@ module.exports.Signin = catchAsyncError(async (req, res, next) => {
   );
   res.status(200).json({ token });
 });
+
+
+
+exports.getProfile = catchAsyncError(async (req, res, next) => {
+  const Student = await StudentModel.findById(req.Student._id);
+  if(!Student) return next(new AppError("Student not found", 404));
+  
+  res.status(200).json({ Student });
+})
 exports.Signout = catchAsyncError(async (req, res, next) => {
   res.clearCookie("token");
 
@@ -65,6 +74,7 @@ exports.Signout = catchAsyncError(async (req, res, next) => {
   });
   res.status(200).json({ message: "logged out" });
 });
+
 exports.protectedRoutes = catchAsyncError(async (req, res, next) => {
   const { token } = req.headers;
   if (!token) return next(new AppError("token inprovided", 401));
@@ -77,7 +87,7 @@ exports.protectedRoutes = catchAsyncError(async (req, res, next) => {
       return next(new AppError("password changed please login agine", 401));
   }
   req.Student = Student;
-
+  
   next();
 });
 exports.allowedTo = (...roles) => {

@@ -10,6 +10,7 @@ const {
   deleteActivity,
   removeImageofromActivity,
   AddImageoToActivity,
+  rateActivity,
 } = require("./activity.service");
 
 const router = require("express").Router({mergeParams: true});
@@ -45,5 +46,6 @@ router
     uploadSingleImage("image", "activity"),
     AddImageoToActivity
   );
+  router.post("/:activityId/rate",protectedRoutes,allowedTo("student"),rateActivity)
 
 module.exports = router;

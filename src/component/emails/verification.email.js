@@ -108,7 +108,6 @@ exports.sendEmail = async (user, host) => {
     },
     (err, info) => {
       if (err) console.log(err);
-      else console.log(info);
     }
   );
 };

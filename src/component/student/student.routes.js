@@ -15,6 +15,7 @@ const {
   Signout,
   protectedRoutes,
   allowedTo,
+  getProfile,
 } = require("./student.auth");
 const { studentValidation } = require("../validations/student.validate");
 
@@ -27,9 +28,9 @@ router
     studentValidation,
     uploadSingleImage("image", "Student"),
     creatStudent
-  )
-  .get(protectedRoutes, allowedTo("admin"),getStudents);
-router.get("/verfy-email", verifyEmail);
+    )
+    .get(protectedRoutes, allowedTo("admin"),getStudents);
+    router.get("/verfy-email", verifyEmail).get("/myProfile", protectedRoutes, getProfile);;
 router
   .route("/:id")
   .get(getٍSpcificStudent ,protectedRoutes, allowedTo("admin","student"))
@@ -48,5 +49,6 @@ router.put(
   allowedTo("student"),
   ChangePass
 );
-router.post("logout", Signout);
+router.post("/logout", Signout)
+
 module.exports = router;
