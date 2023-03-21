@@ -68,19 +68,5 @@ exports.deleteStudent = catchAsyncError(async (req, res) => {
   Student && res.status(200).json("deleted");
 });
 
-module.exports.ChangePass = catchAsyncError(async (req, res) => {
-  const { oldPassword , newPassword } = req.body;
-  const password = newPassword;
-  let match = await bcrypt.compare(oldPassword, req.Student.password);
-  if (match) {
-    let hash = await bcrypt.hash(password, Number(process.env.saltRounds));
-    const Studen = await StudenModel.updateOne(
-      { _id: req.Studen._id },
-      { password: hash }
-    );
-    res.status(200).json({ message: "succes", Studen });
-  } else {
-    next(new AppError("old password incorrect", 404));
-  }
-});
+
 // 01144137171

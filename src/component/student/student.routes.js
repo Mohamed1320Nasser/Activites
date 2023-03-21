@@ -5,7 +5,6 @@ const {
   getٍSpcificStudent,
   updateStudent,
   deleteStudent,
-  ChangePass,
 } = require("./student.service");
 
 const {
@@ -15,40 +14,31 @@ const {
   Signout,
   protectedRoutes,
   allowedTo,
-  getProfile,
 } = require("./student.auth");
-const { studentValidation } = require("../validations/student.validate");
-
+const { getProfile, updateProfile, ChangePass } = require("./student.profile");
 const router = require("express").Router();
+
+// admin routes
 router
   .route("/")
-  .post(
-    protectedRoutes,
-    allowedTo("admin"),
-    studentValidation,
-    uploadSingleImage("image", "Student"),
-    creatStudent
-    )
-    .get(protectedRoutes, allowedTo("admin"),getStudents);
-    router.get("/verfy-email", verifyEmail).get("/myProfile", protectedRoutes, getProfile);;
+  .post(protectedRoutes, allowedTo("admin"), creatStudent)
+  .get(protectedRoutes, allowedTo("admin"), getStudents);
+router.get("/verfy-email", verifyEmail);
 router
   .route("/:id")
-  .get(getٍSpcificStudent ,protectedRoutes, allowedTo("admin","student"))
+  .get(getٍSpcificStudent, protectedRoutes, allowedTo("admin", "student"))
   .put(protectedRoutes, allowedTo("admin"), updateStudent)
   .delete(protectedRoutes, allowedTo("admin"), deleteStudent);
+
+//  student authentication
 router
-  .post(
-    "/signUp",
-    uploadSingleImage("image", "Student"),
-    SignUp
-  )
+  .post("/signUp", uploadSingleImage("image", "Student"), SignUp)
   .post("/signin", Signin);
-router.put(
-  "/changePassword",
-  protectedRoutes,
-  allowedTo("student"),
-  ChangePass
-);
-router.post("/logout", Signout)
+router.post("/logout", Signout);
+// student profile routes
+router
+  .get("/myProfile", protectedRoutes, getProfile)
+  .put("/myProfile/update", protectedRoutes, updateProfile)
+  .put("/myProfile/changePassword", protectedRoutes, allowedTo("student"), ChangePass);
 
 module.exports = router;

@@ -10,8 +10,13 @@ const schema = Schema(
     },
     image: {
       type: String,
+      default:
+        "https://res.cloudinary.com/dw0cormzj/image/upload/v1679430518/Youth%20Welfare/Student/profile_dteqac.jpg",
     },
-
+    cloudinary_id: {
+      type: String,
+      default: "default",
+    },
     code: {
       type: Number,
       required: [true, "user code requires"],
@@ -32,7 +37,6 @@ const schema = Schema(
       minlength: [6, "less than chracter length must be 6"],
     },
     passwordChangeAt: Date,
-    profileImage: String,
     role: {
       type: String,
       enum: ["student", "admin"],
@@ -64,7 +68,7 @@ const schema = Schema(
         ref: "trip",
       },
     ],
-  
+
     passwordChangeAt: Date,
   },
   { timestamps: true }

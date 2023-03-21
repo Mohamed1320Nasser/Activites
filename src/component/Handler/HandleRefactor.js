@@ -30,7 +30,7 @@ exports.createOne = (model, fieldName) => {
         req.body.images = result
       } catch (err) {
         result.map(async (image) => {
-          await deleteFromCloudinary(image)
+          await deleteFromCloudinary(image.cloudinary_id)
         })
         return next(new AppError(`Something went wrong ${err}` , 500));
       }
@@ -43,7 +43,6 @@ exports.createOne = (model, fieldName) => {
     res.status(200).json(document);
   });
 };
-
 // get all Documents
 exports.getAll = (model) => {
   return catchAsyncError(async (req, res, next) => {
@@ -94,7 +93,7 @@ exports.updateOne = (model, folder) => {
     const { id } = req.params;
     if (req.file) {
       const Decument = await model.findById(id);
-      await cloudinary.uploader.destroy(Decument.cloudinary_id);
+      await deleteFromCloudinary(Decument.cloudinary_id)
       const result = await cloudinary.uploader.upload(req.file.path, {
         folder: folder,
       });
@@ -115,7 +114,7 @@ exports.removeImage = (model) => {
     const { id } = req.params;
     const cloudinary_id = req.body.cloudinary_id;
 
-    await cloudinary.uploader.destroy(cloudinary_id);
+    await deleteFromCloudinary(cloudinary_id)
     const Document = await model.findByIdAndUpdate(
       id,
       { $pull: { images: { cloudinary_id: cloudinary_id } } },
@@ -131,9 +130,7 @@ exports.removeImage = (model) => {
 exports.addImage = (model, folder) => {
   return catchAsyncError(async (req, res, next) => {
     const { id } = req.params;
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: folder,
-    });
+    const result = await uploadToCloudinary(req.file.path,folder)
     const Document = await model.findByIdAndUpdate(
       id,
       {
@@ -148,7 +145,6 @@ exports.addImage = (model, folder) => {
     Document && res.status(200).json({ result: Document });
   });
 };
-
 //delete Document
 exports.deleteOne = (model) => {
   return catchAsyncError(async (req, res, next) => {

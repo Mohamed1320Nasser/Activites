@@ -5,15 +5,14 @@ const crypto = require("crypto");
 const { catchAsyncError } = require("../../utils/catchAsyncErr");
 const AppError = require("../../utils/AppError");
 const { sendEmail } = require("../emails/verification.email");
+const { uploadToCloudinary } = require("../../utils/cludinary");
 
 module.exports.SignUp = catchAsyncError(async (req, res, next) => {
   const IsStudent = await StudentModel.findOne({ email: req.body.email });
   if (IsStudent) return next(new AppError("Student is already exists", 401));
   req.body.emailToken = crypto.randomBytes(16).toString("hex");
   if (req.file) {
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: "profile Images",
-    });
+    const result =await uploadToCloudinary(req.file,"Student")
     req.body.image = result.secure_url;
     req.body.secure_url = result.public_id;
   }
@@ -23,14 +22,10 @@ module.exports.SignUp = catchAsyncError(async (req, res, next) => {
   res
     .status(200)
     .json({
-      message: "verification email is sent to your email account",
-      Student,
+      message: "Success To Sign Up please verify your email",
     });
 });
-//https://localhost:3000/studen/verfy-email?token=5e0f3c1e098540e23a01f24cb3348c65
-//https://actitvityv1.onrender.com/studen/verfy-email?token=6ec84856e9a183ca33403912d0ddbbfe
 exports.verifyEmail = catchAsyncError(async (req, res, next) => {
-  console.log("test");
   const { token } = req.query;
   const Student = await StudentModel.findOne({ emailToken: token });
   if (Student) {
@@ -38,10 +33,9 @@ exports.verifyEmail = catchAsyncError(async (req, res, next) => {
       emailToken: null,
       Isverified: true,
     });
-
     res.status(200).json("email verified");
   } else {
-    console.log("email is not verified");
+    res.status(200).json("email is not  verified");
   }
 });
 module.exports.Signin = catchAsyncError(async (req, res, next) => {
@@ -59,18 +53,8 @@ module.exports.Signin = catchAsyncError(async (req, res, next) => {
 });
 
 
-exports.getProfile = catchAsyncError(async (req, res, next) => {
-  if(req.query.lang == "en"){
-    const Student = await StudentModel.findById(req.Student._id).populate([{path:"activity",select:"title_en -_id"}]);
-  if(!Student) return next(new AppError("Student not found", 404));
-  res.status(200).json({ Student });
-  }else{
-    const Student = await StudentModel.findById(req.Student._id).populate([{path:"activity",select:"title_ar  -_id"}]);
-    if(!Student) return next(new AppError("Student not found", 404));
-    res.status(200).json({ Student });
-  }
-  
-})
+   
+
 exports.Signout = catchAsyncError(async (req, res, next) => {
   res.clearCookie("token");
   const expiredToken = jwt.sign({}, process.env.secrit_key, {

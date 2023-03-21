@@ -21,6 +21,6 @@ exports.uploadToCloudinary = async (file, fieldName) => {
      throw new AppError(err, 401);
   }
 };
-exports.deleteFromCloudinary = async (image) => {
-  await cloudinary.uploader.destroy(image.cloudinary_id);
+exports.deleteFromCloudinary = async (publicId) => {
+  await cloudinary.uploader.destroy(publicId);
 };
