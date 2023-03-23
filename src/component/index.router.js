@@ -16,8 +16,8 @@ if (process.env.MODE_ENV === "development") {
   app.use(require("./HomePage/Home.routes"));
   app.use("/send-email", require("./emails/email.routes"));
   app.use("/activities", require("./activities/activity.routes"));
-  app.use("/categories", require("./Categories/category.routes"));
   app.use("/students", require("./student/student.routes"));
+  app.use("/categories", require("./Categories/category.routes"));
   app.use("/trips", require("./trips/trips.routes"));
   app.use("/enroll", require("./enroll/enroll.routes"));
   app.use("/messages", require("./studentMessage/message.routes"));

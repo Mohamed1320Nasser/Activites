@@ -3,6 +3,7 @@ const { catchAsyncError } = require("../../utils/catchAsyncErr");
 const { deleteFromCloudinary } = require("../../utils/cludinary");
 const StudentModel = require("./student.model");
 exports.getProfile = catchAsyncError(async (req, res, next) => {
+  console.log("test");
   if (req.query.lang == "en") {
     const Student = await StudentModel.findById(req.Student._id).populate([
       { path: "activity", select: "title_en -_id" },

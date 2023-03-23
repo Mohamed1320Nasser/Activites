@@ -18,6 +18,13 @@ const {
 const { getProfile, updateProfile, ChangePass } = require("./student.profile");
 const router = require("express").Router();
 
+
+// student profile routes
+router
+  .get("/myProfile", protectedRoutes, getProfile)
+  .put("/myProfile/update",uploadSingleImage("image", "Student"),protectedRoutes, updateProfile)
+  .put("/myProfile/changePassword", protectedRoutes, allowedTo("student"), ChangePass);
+
 // admin routes
 router
   .route("/")
@@ -35,10 +42,7 @@ router
   .post("/signUp", SignUp)
   .post("/signin", Signin);
 router.post("/logout", Signout);
-// student profile routes
-router
-  .get("/myProfile", protectedRoutes, getProfile)
-  .put("/myProfile/update",uploadSingleImage("image", "Student"),protectedRoutes, updateProfile)
-  .put("/myProfile/changePassword", protectedRoutes, allowedTo("student"), ChangePass);
+
+
 
 module.exports = router;
