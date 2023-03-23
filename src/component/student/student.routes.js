@@ -32,13 +32,13 @@ router
 
 //  student authentication
 router
-  .post("/signUp", uploadSingleImage("image", "Student"), SignUp)
+  .post("/signUp", SignUp)
   .post("/signin", Signin);
 router.post("/logout", Signout);
 // student profile routes
 router
   .get("/myProfile", protectedRoutes, getProfile)
-  .put("/myProfile/update", protectedRoutes, updateProfile)
+  .put("/myProfile/update",uploadSingleImage("image", "Student"),protectedRoutes, updateProfile)
   .put("/myProfile/changePassword", protectedRoutes, allowedTo("student"), ChangePass);
 
 module.exports = router;

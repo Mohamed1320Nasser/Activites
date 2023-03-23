@@ -11,11 +11,6 @@ module.exports.SignUp = catchAsyncError(async (req, res, next) => {
   const IsStudent = await StudentModel.findOne({ email: req.body.email });
   if (IsStudent) return next(new AppError("Student is already exists", 401));
   req.body.emailToken = crypto.randomBytes(16).toString("hex");
-  if (req.file) {
-    const result =await uploadToCloudinary(req.file,"Student")
-    req.body.image = result.secure_url;
-    req.body.secure_url = result.public_id;
-  }
   const Student = new StudentModel(req.body);
   await Student.save();
   sendEmail(Student, req.headers.host);
@@ -33,9 +28,9 @@ exports.verifyEmail = catchAsyncError(async (req, res, next) => {
       emailToken: null,
       Isverified: true,
     });
-    res.status(200).json("email verified");
+    res.status(200).json({message:"email verified",status:true});
   } else {
-    res.status(200).json("email is not  verified");
+    res.status(200).json({message:"email verified",status:false});
   }
 });
 module.exports.Signin = catchAsyncError(async (req, res, next) => {
@@ -52,15 +47,12 @@ module.exports.Signin = catchAsyncError(async (req, res, next) => {
   res.status(200).json({ message:"Login success",token });
 });
 
-
-   
-
 exports.Signout = catchAsyncError(async (req, res, next) => {
   res.clearCookie("token");
   const expiredToken = jwt.sign({}, process.env.secrit_key, {
     expiresIn: "10",
   });
-  res.status(200).json({ message: "logged out" });
+  res.status(200).json({ message: "logged out",status:true  });
 });
 
 exports.protectedRoutes = catchAsyncError(async (req, res, next) => {
@@ -68,7 +60,7 @@ exports.protectedRoutes = catchAsyncError(async (req, res, next) => {
   if (!token) return next(new AppError("token inprovided", 401));
   let decoded = jwt.verify(token, process.env.secrit_key);
   const Student = await StudentModel.findById(decoded.StudentId);
-  if (!Student) return next(new AppError("Student not found", 401));
+  if (!Student) return next(new AppError("Student not found", 404));
   if (Student.passwordChangeAt) {
     let changePassword = parseInt(Student.passwordChangeAt.getTime() / 100);
     if (changePassword > decoded.iat)

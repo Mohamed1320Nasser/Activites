@@ -19,7 +19,6 @@ exports.getProfile = catchAsyncError(async (req, res, next) => {
 });
 
 exports.updateProfile = catchAsyncError(async (req, res, next) => {
-  const { name } = req.body;
   const studenId = req.Student._id;
   if (req.file) {
     if (!req.Student.cloudinary_id === "default") {
@@ -27,15 +26,11 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
     }
     const result = await uploadToCloudinary(req.file, "Student");
     req.body.image = result.secure_url;
-    req.body.secure_url = result.public_id;
+    req.body.cloudinary_id = result.public_id;
     await StudentModel.findByIdAndUpdate(studenId, req.body, { new: true });
     res.status(200).json({ message: "success update" });
   } else {
-    await StudentModel.findByIdAndUpdate(
-      studenId,
-      { full_name: name },
-      { new: true }
-    );
+    await StudentModel.findByIdAndUpdate(studenId, req.body, { new: true });
     res.status(200).json({ message: "success update" });
   }
 });

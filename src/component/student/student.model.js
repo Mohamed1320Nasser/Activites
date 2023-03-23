@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const { Schema, model, Types } = require("mongoose");
 const schema = Schema(
   {
-    full_name: {
+    fullName: {
       type: String,
       required: [true, "student name requires"],
       minlength: 2,
@@ -79,4 +79,4 @@ schema.pre("save", function () {
     Number(process.env.saltRounds)
   );
 });
-module.exports = model("user", schema);
+module.exports = model("student", schema);

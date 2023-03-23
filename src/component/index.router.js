@@ -20,6 +20,7 @@ if (process.env.MODE_ENV === "development") {
   app.use("/students", require("./student/student.routes"));
   app.use("/trips", require("./trips/trips.routes"));
   app.use("/enroll", require("./enroll/enroll.routes"));
+  app.use("/messages", require("./studentMessage/message.routes"));
 
   // end point to tell us wrong path
   app.all("*", (req, res, next) => {

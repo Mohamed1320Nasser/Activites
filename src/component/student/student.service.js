@@ -10,9 +10,9 @@ module.exports.creatStudent = catchAsyncError(async (req, res, next) => {
   await Student.save();
   res.status(200).json(Student);
 });
-// to get the All Students {description and name} of youth Student
+
 exports.getStudents = catchAsyncError(async (req, res, next) => {
-  // getStudentts("6403b482ac496178ab47fe88");
+ 
   if (req.query.lang == "en") {
     const Student = await StudentModel.find({})
       .populate([
