@@ -43,7 +43,7 @@ exports.cancel = catchAsyncError(async (req, res, next) => {
     await StudentModel.findByIdAndUpdate(
       StudentId,
       {
-        $pull: { activity: id },
+        $pull: { activity: activityId },
       },
       { new: true }
     );
