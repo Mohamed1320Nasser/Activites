@@ -38,11 +38,9 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
 module.exports.ChangePass = catchAsyncError(async (req, res,next) => {
 
   const { oldPassword, newPassword } = req.body;
-  console.log(oldPassword,newPassword);
   let match = await bcrypt.compare(oldPassword, req.Student.password);
   if (match) {
     let hash = await bcrypt.hash(newPassword, Number(process.env.saltRounds));
-   
     await StudentModel.findByIdAndUpdate(req.Student._id, { password: hash });
     res.status(200).json({ message: " change password is succes" });
   } else {
