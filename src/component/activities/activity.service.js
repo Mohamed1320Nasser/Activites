@@ -35,9 +35,8 @@ exports.rateActivity = catchAsyncError(async (req, res, next) => {
       (rating) => rating.studentId.toString() === studentId.toString()
     );
     if (existingRating) {
-      return res
-        .status(400)
-        .json({ message: "You have already rated this activity" });
+      if(req.query.lang=="en") return res .status(401).json({ message: "You have already rated this activity" });
+      return res .status(401).json({ message: "تم تقييم هذا النشاط من قبل" });
     }
     activity.ratings.push({ studentId, rate });
 
@@ -53,8 +52,10 @@ exports.rateActivity = catchAsyncError(async (req, res, next) => {
       $set: { ratingCount, averageRating },
       $push: { ratings: { studentId, rate } },
     });
-    return res.status(200).json({ message: "Rating added successfully" });
+    if(req.query.lang=="en") return res.status(200).json({ message: "Rating added successfully" });
+    return res.status(200).json({ message: "تم تقييم النشطا بنجاح" });
   } else {
-    return next(new AppError("You are not enrolled in this activity", 401));
+    if(req.query.lang=="en") return next(new AppError("You are not enrolled in this activity", 401));
+    return next(new AppError("لست مسجل في هذا النشاط ", 401));
   }
 });
