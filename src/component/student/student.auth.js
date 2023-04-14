@@ -57,7 +57,7 @@ exports.Signout = catchAsyncError(async (req, res, next) => {
 
 exports.protectedRoutes = catchAsyncError(async (req, res, next) => {
   const { token } = req.headers;
-  if (!token) return next(new AppError("token inprovided", 401));
+  if (!token) return next(new AppError("You Should Make login", 401));
   let decoded = jwt.verify(token, process.env.secrit_key);
   const Student = await StudentModel.findById(decoded.StudentId);
   if (!Student) return next(new AppError("Student not found", 404));
