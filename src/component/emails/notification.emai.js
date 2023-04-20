@@ -21,10 +21,10 @@ const bodyNotification = async (email, message) => {
   // send mail with defined transport object
   await transporter.sendMail(
     {
-      from: '"Thebes Academy " <youthwelfare.thebes@gmail.com>', // sender address
+      from: process.env.EMAIL, // sender address
       to: email,
       subject: "Hello ✔",
-      text: "Hello world?",
+      text: "Hello Dear",
       html: html(message)
     
     ,

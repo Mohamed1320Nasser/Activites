@@ -15,7 +15,7 @@ const {
   protectedRoutes,
   allowedTo,
 } = require("./student.auth");
-const { getProfile, updateProfile, ChangePass } = require("./student.profile");
+const { getProfile, updateProfile, ChangePass, resetPass, verifyCode } = require("./student.profile");
 const router = require("express").Router();
 
 
@@ -23,8 +23,9 @@ const router = require("express").Router();
 router
   .get("/myProfile", protectedRoutes, getProfile)
   .put("/myProfile/update",uploadSingleImage("image", "Student"),protectedRoutes, updateProfile)
-  .put("/myProfile/changePassword", protectedRoutes, allowedTo("student"), ChangePass);
-
+  .put("/myProfile/changePassword", protectedRoutes, allowedTo("student"), ChangePass)
+   .post('/resetPass',resetPass).post('/verifyCode',verifyCode)
+   
 // admin routes
 router
   .route("/")

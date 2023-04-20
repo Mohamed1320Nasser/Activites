@@ -13,9 +13,9 @@ const router = require("express").Router();
 router
   .route("/")
   .post(
-    protectedRoutes,
-    allowedTo("admin"),
-    TripsValidation,
+    // protectedRoutes,
+    // allowedTo("admin"),
+    // TripsValidation,
     uploadSingleImage("image", "trips"),
     creatTrip
   )

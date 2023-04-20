@@ -49,7 +49,7 @@ exports.getAll = (model) => {
     let filter = {};
     if(req.params.categoryId) {
        filter = {category: req.params.categoryId};
-      console.log(req.params.categoryId);
+      
     }
     if (req.query.lang == "en") {
       const Document = await model

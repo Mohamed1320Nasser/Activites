@@ -69,4 +69,3 @@ exports.deleteStudent = catchAsyncError(async (req, res) => {
 });
 
 
-// 01144137171

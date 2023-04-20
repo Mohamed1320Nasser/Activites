@@ -1,8 +1,9 @@
-const bcrypt=require('bcrypt')
+const bcrypt = require("bcrypt");
 const AppError = require("../../utils/AppError");
 const { catchAsyncError } = require("../../utils/catchAsyncErr");
 const { deleteFromCloudinary } = require("../../utils/cludinary");
 const StudentModel = require("./student.model");
+const { transporter } = require("../emails/transporter.email");
 exports.getProfile = catchAsyncError(async (req, res, next) => {
   if (req.query.lang == "en") {
     const Student = await StudentModel.findById(req.Student._id).populate([
@@ -35,8 +36,7 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
     res.status(200).json({ message: "success update" });
   }
 });
-module.exports.ChangePass = catchAsyncError(async (req, res,next) => {
-
+module.exports.ChangePass = catchAsyncError(async (req, res, next) => {
   const { oldPassword, newPassword } = req.body;
   let match = await bcrypt.compare(oldPassword, req.Student.password);
   if (match) {
@@ -44,6 +44,73 @@ module.exports.ChangePass = catchAsyncError(async (req, res,next) => {
     await StudentModel.findByIdAndUpdate(req.Student._id, { password: hash });
     res.status(200).json({ message: " change password is succes" });
   } else {
-   return next(new AppError("Old password is incorrect",401))
+    return next(new AppError("Old password is incorrect", 401));
+  }
+});
+
+
+
+// Password reset route
+
+exports.resetPass = catchAsyncError(async (req, res, next) => {
+  const { email } = req.body;
+  try {
+    // Find the user in MongoDB
+    const user = await StudentModel.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Generate a random number between 100000 and 999999
+    const randomCode = Math.floor(Math.random() * 900000) + 100000;
+    // Hash the random code
+    const hashedCode = await bcrypt.hash(
+      randomCode.toString(),
+      Number(process.env.saltRounds)
+    );
+
+    // Save the hashed code in the user's document in MongoDB
+    user.resetCode = hashedCode;
+    await user.save();
+
+    // Send an email to the user with the verification code
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: email,
+      subject: "Password reset",
+      text: `Your verification code is: ${randomCode}`,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) return res.status(500).json({ message: "Server error" });
+      else return res.status(200).json({ message: "Verification code sent" });
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Verify code and reset password route
+exports.verifyCode = catchAsyncError(async (req, res, next) => {
+  const { email, code, password } = req.body;
+  try {
+    // Find the user in MongoDB
+    const user = await StudentModel.findOne({ email });
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Compare the code entered by the user to the hashed code in the user's document in MongoDB
+    const isCodeValid = await bcrypt.compare(code, user.resetCode);
+
+    if (!isCodeValid) {
+      return res.status(400).json({ message: "Invalid code" });
+    }
+
+    // Update the user's password in MongoDB
+    user.password = password;
+    user.resetCode = null;
+    await user.save();
+
+    // Return a success message
+    res.status(200).json({ message: "Password reset successful" });
+  } catch (error) {
+    console.log(error);
   }
 });

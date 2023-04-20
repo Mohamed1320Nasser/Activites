@@ -36,6 +36,7 @@ const schema = Schema(
       required: [true, "user password requires"],
       minlength: [6, "less than chracter length must be 6"],
     },
+    resetCode:String,
     passwordChangeAt: Date,
     role: {
       type: String,
