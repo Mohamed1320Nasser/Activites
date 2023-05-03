@@ -9,7 +9,9 @@ const {
   deleteTrip,
 } = require("./trips.service");
 
+const enroll = require("../enroll/enroll.routes");
 const router = require("express").Router();
+router.use("/:id/enroll", enroll);
 router
   .route("/")
   .post(
