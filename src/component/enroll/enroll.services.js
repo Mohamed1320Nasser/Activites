@@ -9,9 +9,9 @@ exports.enrollActivity = catchAsyncError(async (req, res, next) => {
   const StudentId = req.Student._id;
   const Student = await StudentModel.findById(StudentId);
   if (Student) {
-    if (Student.activity.includes(activityId)){
-      if(req.query.lang=="en")  return res.status(200).json({message: 'Activity already enrolled'})
-      return  res.status(200).json({message: 'انت بالفعل مسجل من قبل في هذا النشاط'})
+    if (Student.activity.includes(activityId)) {
+      if (req.query.lang == "en") return res.status(200).json({ message: 'Activity already enrolled' })
+      return res.status(200).json({ message: 'انت بالفعل مسجل من قبل في هذا النشاط' })
     }
     if (Student.activity.length < 3) {
       const activity = await activityModel.findById(activityId);
@@ -27,12 +27,12 @@ exports.enrollActivity = catchAsyncError(async (req, res, next) => {
         await activityModel.findByIdAndUpdate(activityId, {
           $inc: { numRecorded: 1 },
         });
-       if(req.query.lang=="en") return res.status(200).json({ message: "enroll success" });
-       res.status(200).json({ message:"تم التسجبل بنجاح" })
+        if (req.query.lang == "en") return res.status(200).json({ message: "enroll success" });
+        res.status(200).json({ message: "تم التسجبل بنجاح" })
       }
     } else {
-      if(req.query.lang=="en") return res.status(200).json({message:"you enroll more than 3 activities"});
-      res.status(200).json({message:"لا يمكن التسجيل في اكثر من 3 انشطة"})
+      if (req.query.lang == "en") return res.status(200).json({ message: "you enroll more than 3 activities" });
+      res.status(200).json({ message: "لا يمكن التسجيل في اكثر من 3 انشطة" })
     }
   } else {
     return next(new AppError("Student not found", 404));
@@ -49,18 +49,18 @@ exports.cancel = catchAsyncError(async (req, res, next) => {
       {
         $pull: { activity: activityId },
       },
-      { new: true }
+      { new: true}
     );
     await activityModel.findByIdAndUpdate(activityId, {
       $inc: { numRecorded: -1 },
     });
-    if(req.query.lang=="en") return res.status(200).json({ message: "Successfully cancel the activity " });
+    if (req.query.lang == "en") return res.status(200).json({ message: "Successfully cancel the activity " });
     return res.status(200).json({ message: "الغاء التسجيل بنجاح " });
   } else {
     return next(new AppError("Student not found", 404));
   }
 });
-// regester in trips
+// regester in trips /////////////////////////////
 exports.enrollTrip = catchAsyncError(async (req, res, next) => {
   const id = Types.ObjectId(req.params.id);
   const StudentId = req.Student._id;
