@@ -44,9 +44,8 @@ module.exports.Signin = catchAsyncError(async (req, res, next) => {
     { StudentId: Student._id, name: Student.name },
     process.env.secrit_key
   );
-  res.status(200).json({ message:"Login success",token });
+  res.status(200).json({ message:"Login success",token,role:Student.role });
 });
-
 exports.Signout = catchAsyncError(async (req, res, next) => {
   res.clearCookie("token");
   const expiredToken = jwt.sign({}, process.env.secrit_key, {
