@@ -43,6 +43,10 @@ const schema = Schema(
       enum: ["student", "admin"],
       default: "student",
     },
+    active:{
+      type:Boolean,
+      default: false
+    },
     Isverified: {
       type: Boolean,
       default: false,

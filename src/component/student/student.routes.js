@@ -14,6 +14,7 @@ const {
   Signout,
   protectedRoutes,
   allowedTo,
+  adminActive,
 } = require("./student.auth");
 const { getProfile, updateProfile, ChangePass, resetPass, verifyCode } = require("./student.profile");
 const router = require("express").Router();
@@ -30,7 +31,7 @@ router
 router
   .route("/")
   .post(protectedRoutes, allowedTo("admin"), creatStudent)
-  .get(protectedRoutes, allowedTo("admin"), getStudents);
+  .get(protectedRoutes, allowedTo("admin"),getStudents);
 router.get("/verfy-email", verifyEmail);
 router
   .route("/:id")
@@ -41,9 +42,9 @@ router
 //  student authentication
 router
   .post("/signUp", SignUp)
-  .post("/signin", Signin);
+  .post("/signin", Signin)
+  .get("/active", adminActive);
 router.post("/logout", Signout);
-
 
 
 module.exports = router;
