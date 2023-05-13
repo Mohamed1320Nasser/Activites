@@ -6,7 +6,8 @@ const mimeTypes= require("mime-types")
 let options = (folderName) => {
   const storage = multer.diskStorage({});
   function fileFilter(req, file, cb) {
-   const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    console.log(file);
+   const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif '];
    const fileMimeType = mimeTypes.lookup(file.originalname);
     if (allowedMimeTypes.includes(fileMimeType) )  {
       cb(null, true);
@@ -25,6 +26,7 @@ exports.fileMixUpload = (fieldArry, folderName) =>
 
 
   exports.checkImageUpload = (req, res, next) => {
+    // console.log(req.file);
     if (!req.file ) {
       return res.status(400).json({ error: 'No image uploaded' });
     }
