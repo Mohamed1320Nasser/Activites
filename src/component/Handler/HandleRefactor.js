@@ -119,7 +119,8 @@ exports.removeImage = (model) => {
 exports.addImage = (model, folder) => {
   return catchAsyncError(async (req, res, next) => {
     const { id } = req.params;
-    const result = await uploadToCloudinary(req.file.path, folder)
+    const result = await uploadToCloudinary(req.file, folder)
+    if(!result) return next(new AppError("upload not succes", 404))
     const Document = await model.findByIdAndUpdate(
       id,
       {

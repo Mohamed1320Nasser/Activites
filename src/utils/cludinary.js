@@ -1,3 +1,4 @@
+const AppError = require("./AppError");
 const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
@@ -10,7 +11,7 @@ exports.cloudinary = cloudinary;
 exports.uploadToCloudinary = async (file, fieldName) => {
   try {
     if (file.size > 500000) {
-      throw new AppError("File size should be less than 500kb", 401);
+      throw "File size should be less than 5Mb";
     }
     const result = await cloudinary.uploader.upload(file.path, {
       folder: `Youth Welfare/${fieldName}`,
@@ -18,7 +19,7 @@ exports.uploadToCloudinary = async (file, fieldName) => {
     });
     return result;
   } catch (err) {
-     throw new AppError(err, 401);
+    throw new AppError(err,500)
   }
 };
 exports.deleteFromCloudinary = async (publicId) => {

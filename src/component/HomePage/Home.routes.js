@@ -5,6 +5,6 @@ const { getHomePage, updateHomePage, AddImageoToHome, removeImageofromHome } = r
 const router = require("express").Router();
 router.route("/").get(getHomePage);
 router.route("/:id").put(protectedRoutes, allowedTo("admin"), updateHomePage);
-router.route("/addImage/:id").post(protectedRoutes, allowedTo("admin"),uploadSingleImage("image", "Home"), AddImageoToHome);
+router.route("/addImage/:id").post(uploadSingleImage("image", "Home"), AddImageoToHome);
 router.route("/removeImage/:id").post(protectedRoutes, allowedTo("admin"), removeImageofromHome);
 module.exports = router;
