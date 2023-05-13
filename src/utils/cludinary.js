@@ -19,7 +19,7 @@ exports.uploadToCloudinary = async (file, fieldName) => {
     });
     return result;
   } catch (err) {
-    throw new AppError(err,500)
+    throw new AppError(err,401)
   }
 };
 exports.deleteFromCloudinary = async (publicId) => {
