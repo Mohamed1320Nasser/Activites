@@ -111,7 +111,7 @@ exports.removeImage = (model) => {
     );
     await Document.save();
     !Document && next(new AppError("Document not found", 404));
-    Document && res.status(200).json({ message : "delete image success" });
+    Document && res.status(200).json({ result:Document });
   });
 };
 

@@ -10,7 +10,6 @@ exports.cloudinary = cloudinary;
 
 exports.uploadToCloudinary = async (file, fieldName) => {
   try {
-    console.log(file);
     if (file.size > 3000000) {
       throw "File size should be less than 3Mb";
     }
