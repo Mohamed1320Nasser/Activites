@@ -1,4 +1,4 @@
-const { fileMixUpload, uploadSingleImage } = require("../../utils/uploadFile");
+const { fileMixUpload, uploadSingleImage, checkImageUpload } = require("../../utils/uploadFile");
 const { protectedRoutes, allowedTo } = require("../student/student.auth");
 const { ActivityValidation } = require("../validations/activity.validate");
 const { validation } = require("../validations/validation.meddle");
@@ -45,6 +45,7 @@ router
     protectedRoutes,
     allowedTo("admin"),
     uploadSingleImage("image", "activity"),
+    checkImageUpload,
     AddImageoToActivity
   );
   router.post("/:id/rate",protectedRoutes,allowedTo("student"),rateActivity)

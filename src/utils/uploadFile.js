@@ -22,3 +22,11 @@ exports.uploadSingleImage = (fieldName, folderName) =>
 
 exports.fileMixUpload = (fieldArry, folderName) =>
   options(folderName).fields(fieldArry);
+
+
+  exports.checkImageUpload = (req, res, next) => {
+    if (!req.file ) {
+      return res.status(400).json({ error: 'No image uploaded' });
+    }
+    next();
+  };
