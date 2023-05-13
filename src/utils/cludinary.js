@@ -10,8 +10,9 @@ exports.cloudinary = cloudinary;
 
 exports.uploadToCloudinary = async (file, fieldName) => {
   try {
-    if (file.size > 500000) {
-      throw "File size should be less than 5Mb";
+    console.log(file);
+    if (file.size > 3000000) {
+      throw "File size should be less than 3Mb";
     }
     const result = await cloudinary.uploader.upload(file.path, {
       folder: `Youth Welfare/${fieldName}`,

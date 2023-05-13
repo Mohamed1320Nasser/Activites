@@ -19,7 +19,6 @@ exports.getProfile = catchAsyncError(async (req, res, next) => {
 });
 exports.updateProfile = catchAsyncError(async (req, res, next) => {
   const { fullName, phone } = req.body
-
   const studentId = req.Student?._id;
 
   if (!studentId) {

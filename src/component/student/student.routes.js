@@ -19,7 +19,6 @@ const {
 const { getProfile, updateProfile, ChangePass, resetPass, verifyCode } = require("./student.profile");
 const router = require("express").Router();
 
-
 // student profile routes
 router
   .get("/myProfile", protectedRoutes, getProfile)
