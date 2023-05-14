@@ -129,7 +129,7 @@ exports.enrollTrip = catchAsyncError(async (req, res, next) => {
       { $addToSet: { trip: tripsId } },
       { new: true, lean: true, select: 'trip' }
     ),
-    tripsModel.findOneAndUpdate(
+  tripsModel.findOneAndUpdate(
       { _id: tripsId },
       { $inc: { numRecorded: 1 } },
       { new: true, lean: true, select: 'numRecorded' }
@@ -138,11 +138,10 @@ exports.enrollTrip = catchAsyncError(async (req, res, next) => {
   if (!student) {
     return next(new AppError("Student not found", 404));
   }
-
   if (!trip) {
     return next(new AppError("Trip not found", 404));
   }
-
+  console.log(trip);
   res.status(200).json({ message: "success", result: student });
 });
 

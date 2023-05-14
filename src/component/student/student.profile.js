@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const AppError = require("../../utils/AppError");
 const { catchAsyncError } = require("../../utils/catchAsyncErr");
-const { deleteFromCloudinary } = require("../../utils/cludinary");
+const { deleteFromCloudinary, uploadToCloudinary } = require("../../utils/cludinary");
 const StudentModel = require("./student.model");
 const { transporter } = require("../emails/transporter.email");
 
@@ -20,15 +20,17 @@ exports.getProfile = catchAsyncError(async (req, res, next) => {
 exports.updateProfile = catchAsyncError(async (req, res, next) => {
   const { fullName, phone } = req.body
   const studentId = req.Student?._id;
-
   if (!studentId) {
     return res.status(400).json({ message: "Invalid student ID" });
   }
   let updateData = { fullName, phone };
   if (req.file) {
+    const result = await uploadToCloudinary(req.file)
     if (req.Student.cloudinary_id !== "default") {
       await deleteFromCloudinary(req.Student.cloudinary_id);
     }
+    updateData.image = result.secure_url
+    updateData.cloudinary_id = result.public_id
   }
   const updatedStudent = await StudentModel.findByIdAndUpdate(
     studentId,
@@ -38,9 +40,7 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
   if (!updatedStudent) {
     return res.status(404).json({ message: "Student not found" });
   }
-
   return res.status(200).json({ message: "Profile updated successfully" });
-
 
 });
 module.exports.ChangePass = catchAsyncError(async (req, res, next) => {
