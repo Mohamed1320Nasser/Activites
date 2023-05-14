@@ -16,7 +16,6 @@ const schema = new Schema(
       minlength: 2,
       unique: true,
     },
-
     description_ar: {
       type: String,
       required: true,

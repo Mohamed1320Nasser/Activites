@@ -96,7 +96,6 @@ exports.updateOne = (model, folder) => {
     Decument && res.status(200).json({ result: Decument });
   });
 };
-
 // remove image from document
 exports.removeImage = (model) => {
   return catchAsyncError(async (req, res, next) => {
