@@ -40,7 +40,6 @@ const schema = new Schema(
     coverImage: String,
     cloudinary_id: String,
     images: [],
-    multiCloudinary_id: [String],
   },
   { timestamps: true }
 );

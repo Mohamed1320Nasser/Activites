@@ -1,7 +1,7 @@
 const { fileMixUpload, uploadSingleImage, checkImageUpload } = require("../../utils/uploadFile");
 const { protectedRoutes, allowedTo } = require("../student/student.auth");
-const { ActivityValidation } = require("../validations/activity.validate");
-const { validation } = require("../validations/validation.meddle");
+const { ActivityValidation } = require("./activity.validate");
+const { validation } = require("../../utils/validation.meddle");
 const {
   creatActivity,
   getActivities,
@@ -25,13 +25,14 @@ router
     protectedRoutes,
     allowedTo("admin"),
     fileMixUpload(fields, "activity"),
+    validation(ActivityValidation),
     creatActivity
   )
   .get(getActivities);
 router
   .route("/:id")
   .get(getٍSpcificActivity)
-  .put(protectedRoutes, allowedTo("admin"), updateActivity)
+  .put(protectedRoutes, allowedTo("admin"), validation(ActivityValidation), updateActivity)
   .delete(protectedRoutes, allowedTo("admin"), deleteActivity);
 router
   .post(

@@ -7,7 +7,7 @@ exports.sendEmail = async (user, host) => {
   await transporter.sendMail(
     {
       from: process.env.EMAIL, // sender address
-      to: user.email,
+      to: `Yath Welfare <${user.email}>`,
       subject: `Hello ${user.fullName}`, // Subject line,
       text: "Hello ",
       html:`

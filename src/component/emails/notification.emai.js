@@ -21,7 +21,7 @@ const bodyNotification = async (email, message) => {
   // send mail with defined transport object
   await transporter.sendMail(
     {
-      from: process.env.EMAIL, // sender address
+      from: ` Yeth Welfar <${process.env.EMAIL}>`, // sender address
       to: email,
       subject: "Hello ✔",
       text: "Hello Dear",

@@ -6,7 +6,6 @@ const {
   updateStudent,
   deleteStudent,
 } = require("./student.service");
-
 const {
   SignUp,
   Signin,
@@ -17,20 +16,21 @@ const {
   adminActive,
 } = require("./student.auth");
 const { getProfile, updateProfile, ChangePass, resetPass, verifyCode } = require("./student.profile");
+const { validation } = require("../../utils/validation.meddle");
+const { loginSchema, changePassSchema, updateProfileSchema, restPassValidation, verifyPassValidation } = require("./student.validate");
 const router = require("express").Router();
 
 // student profile routes
 router
   .get("/myProfile", protectedRoutes, getProfile)
-  .put("/myProfile/update",uploadSingleImage("image", "Student"),protectedRoutes, updateProfile)
-  .put("/myProfile/changePassword", protectedRoutes, allowedTo("student"), ChangePass)
-   .post('/resetPass',resetPass).post('/verifyCode',verifyCode)
-   
+  .put("/myProfile/update", uploadSingleImage("image", "Student"), protectedRoutes, validation(updateProfileSchema), updateProfile)
+  .put("/myProfile/changePassword", protectedRoutes, allowedTo("student"), validation(changePassSchema), ChangePass)
+  .post('/resetPass', validation(restPassValidation), resetPass).post('/verifyCode', validation(verifyPassValidation), verifyCode)
 // admin routes
 router
   .route("/")
-  .post(protectedRoutes, allowedTo("admin"), creatStudent)
-  .get(protectedRoutes, allowedTo("admin"),getStudents);
+  .post(protectedRoutes, allowedTo("admin"), validation(studenSchema), creatStudent)
+  .get(protectedRoutes, allowedTo("admin"), getStudents);
 router.get("/verfy-email", verifyEmail);
 router
   .route("/:id")
@@ -38,10 +38,11 @@ router
   .put(protectedRoutes, allowedTo("admin"), updateStudent)
   .delete(protectedRoutes, allowedTo("admin"), deleteStudent);
 
+
 //  student authentication
 router
-  .post("/signUp", SignUp)
-  .post("/signin", Signin)
+  .post("/signUp", validation(studenSchema), SignUp)
+  .post("/signin", validation(loginSchema), Signin)
   .get("/active", adminActive);
 router.post("/logout", Signout);
 

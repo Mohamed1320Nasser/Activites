@@ -52,11 +52,7 @@ const schema = Schema(
       default: false,
     },
     emailToken: String,
-    Specialization_ar: {
-      type: String,
-      required: [true, "يجب ادخال اسم التخصص"],
-    },
-    Specialization_en: {
+    Specialization: {
       type: String,
       required: [true, "student Specialization requires"],
     },

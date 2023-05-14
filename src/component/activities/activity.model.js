@@ -28,8 +28,8 @@ const schema = new Schema(
       minlength: 20,
     },
     coverImage: String,
-    cloudinary_id: String,
     images: [],
+    cloudinary_id: String,
     numRecorded: {
       type: Number,
       default: 0,
