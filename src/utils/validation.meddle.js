@@ -19,7 +19,7 @@ exports.validation = (Schema) => {
             }
 
         } catch (error) {
-            return next(new Error("validation err", 500 ))
+            return next(new Error(`validation err ${error}`, 500 ))
         }
     }
 

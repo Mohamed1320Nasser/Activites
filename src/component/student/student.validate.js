@@ -29,8 +29,8 @@ exports.studentSchema =  { body: joi
              'number.base': 'Code must be a number',
              'number.empty': 'Code is required',
              'number.integer': 'Code must be an integer',
-             'number.min': 'Code must start with the number 20',
              'number.max': 'Code must be exactly 9 digits long',
+             'number.min': 'Code must start with the number 20',
            }),
            Specialization:joi.string().required(),
 })

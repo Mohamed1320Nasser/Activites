@@ -13,7 +13,9 @@ module.exports.SignUp = catchAsyncError(async (req, res, next) => {
   req.body.emailToken = crypto.randomBytes(16).toString("hex");
   const Student = new StudentModel(req.body);
   await Student.save();
-  sendEmail(Student, req.headers.host);
+  
+  console.log(process.env.DOMAIN);
+  sendEmail(Student, process.env.DOMAIN);
   res
     .status(200)
     .json({

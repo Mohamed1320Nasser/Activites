@@ -17,7 +17,7 @@ const {
 } = require("./student.auth");
 const { getProfile, updateProfile, ChangePass, resetPass, verifyCode } = require("./student.profile");
 const { validation } = require("../../utils/validation.meddle");
-const { loginSchema, changePassSchema, updateProfileSchema, restPassValidation, verifyPassValidation, studenSchema, studentSchema } = require("./student.validate");
+const { loginSchema, changePassSchema, updateProfileSchema, restPassValidation, verifyPassValidation, studentSchema } = require("./student.validate");
 const router = require("express").Router();
 
 // student profile routes
@@ -41,7 +41,7 @@ router
 
 //  student authentication
 router
-  .post("/signUp", validation(studenSchema), SignUp)
+  .post("/signUp", validation(studentSchema), SignUp)
   .post("/signin", validation(loginSchema), Signin)
   .get("/active", adminActive);
 router.post("/logout", Signout);
