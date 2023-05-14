@@ -1,3 +1,4 @@
+
 const { Schema, model, Types } = require("mongoose");
 
 const schema = new Schema(
@@ -27,7 +28,6 @@ const schema = new Schema(
       required: true,
       minlength: 20,
     },
-
     image: String,
     category: {
       type: Types.ObjectId,
@@ -37,6 +37,10 @@ const schema = new Schema(
     place_ar: { type: String, required: true },
     place_en: { type: String, required: true },
     date: Date,
+    numRecorded: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
