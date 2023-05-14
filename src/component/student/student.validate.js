@@ -1,5 +1,5 @@
 const joi = require("joi");
-exports.studenSchema =  { body: joi
+exports.studentSchema =  { body: joi
    .object()
    .required()
    .keys({
@@ -95,7 +95,8 @@ exports.loginSchema = { body: joi
             "any.required": "user email field is required",
             "any.empty": "empty user name is not acceptable",
           }),
-          code:joi.number().required().message("verify code is required"),
+
+          code:joi.number().required(),
           password: joi.string().required().regex(RegExp(/^(?=.*[a-zA-Z])(?=.*\d).{8,}$/)).messages({
             "any.required": "student password field is required",
             "any.empty": "empty student password is not acceptable",
