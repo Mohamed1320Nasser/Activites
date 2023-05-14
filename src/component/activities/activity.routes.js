@@ -34,13 +34,13 @@ router
   .put(protectedRoutes, allowedTo("admin"), updateActivity)
   .delete(protectedRoutes, allowedTo("admin"), deleteActivity);
 router
-  .put(
+  .post(
     "/removeImage/:id",
     protectedRoutes,
     allowedTo("admin"),
     removeImageofromActivity
   )
-  .put(
+  .post(
     "/addImage/:id",
     protectedRoutes,
     allowedTo("admin"),
