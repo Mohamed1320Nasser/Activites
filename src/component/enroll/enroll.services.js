@@ -122,18 +122,19 @@ exports.cancel = catchAsyncError(async (req, res, next) => {
 exports.enrollTrip = catchAsyncError(async (req, res, next) => {
   const tripsId = Types.ObjectId(req.params.id);
   const studentId = req.Student._id;
-  
   const student= await  StudentModel.findOneAndUpdate(
       { _id: studentId },
       { $addToSet: { trip: tripsId } },
       { new: true, lean: true, select: 'trip' }
     )
-    
+
     const trip= await  tripsModel.findOneAndUpdate(
       { _id: tripsId },
       { $inc: { numRecorded: 1 } },
       { new: true, lean: true, select: 'numRecorded' }
     )
+    console.log(trip);
+    console.log(student);
 
   if (!student) {
     return next(new AppError("Student not found", 404));
