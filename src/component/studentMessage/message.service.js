@@ -11,17 +11,19 @@ exports.CreatMessage = catchAsyncError(async (req, res, next) => {
   res.status(200).json({ message: "send message successfully", status: true });
 });
 exports.getMassages = catchAsyncError(async (req, res, next) => {
-  const MSG = await messageModel.find({})
+  const MSG = await messageModel.find({}).populate(
+    { path: "student", select: 'fullName code phone' })
   !MSG && next(new AppError("messages not found", " 404"));
   MSG && res.status(200).json({ result: MSG, status: true });
 });
 exports.getOneMassage = catchAsyncError(async (req, res, next) => {
-    const MSG = await messageModel.findById(req.params.id).populate({ path: "student" });
-    !MSG && next(new AppError("message not found", " 404"));
-    MSG && res.status(200).json({ result: MSG, status: true });
-  });
+  const MSG = await messageModel.findById(req.params.id).populate(
+    { path: "student", select: 'fullName code phone' })
+  !MSG && next(new AppError("message not found", " 404"));
+  MSG && res.status(200).json({ result: MSG, status: true });
+});
 exports.deleteAllMessage = catchAsyncError(async (req, res, next) => {
-    await messageModel.collection.drop((error) => {
+  await messageModel.collection.drop((error) => {
     if (error) {
       res.status(400).json({ messge: "Error dropping collection: ", error });
     } else {
@@ -29,8 +31,8 @@ exports.deleteAllMessage = catchAsyncError(async (req, res, next) => {
     }
   });
 });
-exports.deleteOneMessage=catchAsyncError(async (req,res,next)=>{
-    await messageModel.findByIdAndDelete(req.params.id)
-    res.status(200).json({ messge: "message deleted successfully" });
+exports.deleteOneMessage = catchAsyncError(async (req, res, next) => {
+  await messageModel.findByIdAndDelete(req.params.id)
+  res.status(200).json({ messge: "message deleted successfully" });
 })
 

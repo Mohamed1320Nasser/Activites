@@ -11,7 +11,7 @@ const router = require("express").Router();
 
 router
   .post("/", protectedRoutes, CreatMessage)
-  .get("/", protectedRoutes, allowedTo("admin"), getMassages)
+  .get("/", getMassages)
   .delete("/", protectedRoutes, allowedTo("admin"), deleteAllMessage);
 router
   .route("/:id")

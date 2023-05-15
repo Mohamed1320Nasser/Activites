@@ -1,9 +1,11 @@
 const ActivityModel = require("./activity.model");
+const fs = require('fs');
 const refactor = require("../Handler/HandleRefactor");
 const { catchAsyncError } = require("../../utils/catchAsyncErr");
 const { Types } = require("mongoose");
 const AppError = require("../../utils/AppError");
-
+const { createPDF } = require("../reports/report.service.pdf");
+const userModel = require('../student/student.model')
 // to creat Activity
 module.exports.creatActivity = refactor.createOne(ActivityModel, "activity");
 // to get the All Activities {description and name} of youth Activity
@@ -67,7 +69,9 @@ exports.actvityReport=catchAsyncError(async (req,res,next)=>{
   .find({
     activity: Types.ObjectId(activityId),
   }).lean()
-if (students.length == 0) {
-  console.log("students not found");
-}
+if (students.length === 0) return res.status(400).json("no students enrolled in this activity") 
+const result = await createPDF(students)
+
+fs.unlinkSync(result.filePath)
+    res.status(200).json('suc')
 })

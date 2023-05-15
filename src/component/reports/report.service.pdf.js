@@ -1,13 +1,12 @@
 let pdf = require("pdf-creator-node");
+const {v4 : uuidv4} = require('uuid')
 let fs = require("fs");
 let path = require("path");
-const { catchAsyncError } = require("../../utils/catchAsyncErr");
 const { options } = require("./option");
-const studentModel = require('../student/student.model')
-exports.createPDF= catchAsyncError(async(req,res,next)=>{
-  const students = await studentModel.find({}).lean()
+exports.createPDF= async (students)=>{
     let html = fs.readFileSync(path.join(__dirname,"./pdf.html"), "utf8");
-    let fileName="mohamedata.pdf";
+    const userId = uuidv4()
+    let fileName=`${userId}.pdf`
     let document = {
         html: html,
         data: {students},
@@ -15,5 +14,6 @@ exports.createPDF= catchAsyncError(async(req,res,next)=>{
       };
       let filePath=`http://localhost:3000/${fileName}`
 let result =await pdf.create(document, options)
-res.send(`<a download href = ${filePath}>Download</a>`)
-})
+url= `<a download href = ${filePath}>Download</a>`
+return { url, filePath}
+    }
