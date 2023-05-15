@@ -21,7 +21,7 @@ exports.getٍSpcificTrip = catchAsyncError(async (req, res, next) => {
     Trip && res.status(200).json({ result: Trip });
   } else {
     const Trip = await TripModel.findById(id).select(
-      "-title_en -description_ar -place_en"
+      "-title_en -description_en -place_en"
     );
     !Trip && next(new AppError("غير موجود", 404));
     Trip && res.status(200).json({ result: Trip });
