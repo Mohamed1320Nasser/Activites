@@ -12,7 +12,6 @@ const getStudents = async (activityName) => {
     .select("email -_id");
     return students;
 };
-
 const bodyNotification = async (email, message) => {
   // send mail with defined transport object
   await transporter.sendMail(
@@ -22,17 +21,13 @@ const bodyNotification = async (email, message) => {
       subject: "Hello ✔",
       text: "Hello Dear",
       html: html(message)
-    ,
-    },
-    (err, info) => {
-      if (err) throw err;
     }
   );
 };//res.status(400).json("There are no students registered for this activity");
 exports.sendNotification = catchAsyncError(async (req, res, next) => {
   activityName = req.body.activity;
   const students = await getStudents(activityName);
-  if (students.length===0) return next(new AppError("There are no students registered for this activity",400))
+  if (students.length === 0) return next(new AppError("There are no students registered for this activity",400))
   students.forEach((ele)=>{
    bodyNotification(ele,req.body.message);
   })
