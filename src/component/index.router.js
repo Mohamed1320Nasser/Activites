@@ -15,6 +15,7 @@ if (process.env.MODE_ENV === "development") {
   //setup API routes
   app.use(require("./HomePage/Home.routes"));
   app.use("/send-email", require("./emails/email.routes"));
+  app.use("/reports", require("./reports/report.routes"));
   app.use("/activities", require("./activities/activity.routes"));
   app.use("/students", require("./student/student.routes"));
   app.use("/categories", require("./Categories/category.routes"));

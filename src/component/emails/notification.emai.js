@@ -9,12 +9,7 @@ const getStudents = async (activityName) => {
       activity: Types.ObjectId(activityName),
     })
     .select("email -_id");
-  if (students.length == 0) {
-    console.log("students not found");
-  } else {
-    // console.log(students);
     return students;
-  }
 };
 
 const bodyNotification = async (email, message) => {
@@ -38,6 +33,7 @@ const bodyNotification = async (email, message) => {
 exports.sendNotification = catchAsyncError(async (req, res, next) => {
   activityName = req.body.activity;
   const students = await getStudents(activityName);
+  if (!students) return res.json.status(400).json("No Students enrlled in this activity");
   students.forEach((ele)=>{
    bodyNotification(ele,req.body.message);
   })

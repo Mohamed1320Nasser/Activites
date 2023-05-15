@@ -10,7 +10,6 @@ module.exports.creatStudent = catchAsyncError(async (req, res, next) => {
   await Student.save();
   res.status(200).json(Student);
 });
-
 exports.getStudents = catchAsyncError(async (req, res, next) => {
   const lang = req.query.lang || "ar";
   const nameField = lang === "ar" ? "-name_en -Specialization_en" : "-name_ar -Specialization_ar";

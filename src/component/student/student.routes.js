@@ -46,5 +46,4 @@ router
   .get("/active", adminActive);
 router.post("/logout", Signout);
 
-
 module.exports = router;

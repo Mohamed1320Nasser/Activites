@@ -59,3 +59,15 @@ exports.rateActivity = catchAsyncError(async (req, res, next) => {
     return next(new AppError("لست مسجل في هذا النشاط ", 401));
   }
 });
+
+
+exports.actvityReport=catchAsyncError(async (req,res,next)=>{
+  const activityId=req.params.id
+  const students = await userModel
+  .find({
+    activity: Types.ObjectId(activityId),
+  }).lean()
+if (students.length == 0) {
+  console.log("students not found");
+}
+})

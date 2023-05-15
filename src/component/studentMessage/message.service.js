@@ -5,7 +5,7 @@ exports.CreatMessage = catchAsyncError(async (req, res, next) => {
   const studentId = req.Student._id;
   const MSG = await new messageModel({
     message: message,
-    studentId: studentId,
+    student: studentId,
   });
   MSG.save();
   res.status(200).json({ message: "send message successfully", status: true });
@@ -21,7 +21,7 @@ exports.getOneMassage = catchAsyncError(async (req, res, next) => {
     MSG && res.status(200).json({ result: MSG, status: true });
   });
 exports.deleteAllMessage = catchAsyncError(async (req, res, next) => {
- await messageModel.collection.drop((error) => {
+    await messageModel.collection.drop((error) => {
     if (error) {
       res.status(400).json({ messge: "Error dropping collection: ", error });
     } else {
