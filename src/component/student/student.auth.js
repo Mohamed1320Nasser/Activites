@@ -80,7 +80,8 @@ exports.allowedTo = (...roles) => {
 };
 exports.adminActive= catchAsyncError(async (req,res,next)=>{
   const studentId = req.params.studentId;
-   await StudentModel.findByIdAndUpdate({studentId,active:true},{new:true});
+
+   await StudentModel.findByIdAndUpdate(studentId,{active:true},{new:true});
    return res.status(200).json({message:" student is active successfully"})
 })
 exports.checkActiveStudent = catchAsyncError(async(req,res,next)=>{
