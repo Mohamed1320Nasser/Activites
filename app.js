@@ -2,6 +2,7 @@
 process.on("uncaughtException", (err) => {
   console.log("uncaughtException", err.stack);
 });
+
 // express frame  work
 const bodyParser = require("body-parser");
 const express = require("express");
@@ -11,6 +12,7 @@ app.use(express.static('./src/docs'));
 app.use(bodyParser.urlencoded({ extended: true }));
 const cors = require("cors");
 app.use(cors());
+
 // module dotenv to save the improtant data
 require("dotenv").config({ path: "./config/.env" });
 

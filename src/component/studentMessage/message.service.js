@@ -10,15 +10,16 @@ exports.CreatMessage = catchAsyncError(async (req, res, next) => {
   MSG.save();
   res.status(200).json({ message: "send message successfully", status: true });
 });
+
 exports.getMassages = catchAsyncError(async (req, res, next) => {
   const MSG = await messageModel.find({}).populate(
-    { path: "student", select: 'fullName code phone' })
+    { path: "student", select: 'fullName code phone createdAt ' })
   !MSG && next(new AppError("messages not found", " 404"));
   MSG && res.status(200).json({ result: MSG, status: true });
 });
 exports.getOneMassage = catchAsyncError(async (req, res, next) => {
   const MSG = await messageModel.findById(req.params.id).populate(
-    { path: "student", select: 'fullName code phone' })
+    { path: "student", select: 'fullName code phone createdAt' })
   !MSG && next(new AppError("message not found", " 404"));
   MSG && res.status(200).json({ result: MSG, status: true });
 });

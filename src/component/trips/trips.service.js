@@ -1,7 +1,8 @@
 const AppError = require("../../utils/AppError");
 const { catchAsyncError } = require("../../utils/catchAsyncErr");
 const TripModel = require("./trips.model");
-const refactor=require("../Handler/HandleRefactor")
+const refactor=require("../Handler/HandleRefactor");
+const { Types } = require("mongoose");
 
 // to creat Trip
 module.exports.creatTrip = refactor.createOne(TripModel,"trips");
@@ -44,3 +45,17 @@ exports.deleteTrip = catchAsyncError(async (req, res) => {
   !Trip && next(new AppError("Trip not found", 404));
   Trip && res.status(200).json("deleted");
 });
+
+
+exports.tripReport=catchAsyncError(async (req,res,next)=>{
+  const tripId=req.params.id
+  const students = await userModel
+  .find({
+    trip: Types.ObjectId(tripId),
+  }).lean()
+if (students.length === 0) return res.status(400).json("no students enrolled in this activity") 
+const result = await createPDF(students)
+fs.unlinkSync(result.route)
+deleteFileAfterDelay(result.route, 0,5 * 60 * 60 * 1000); // Delete file after 1 hour
+    res.status(200).json(result.filePath)
+})

@@ -7,6 +7,7 @@ const {
   getٍSpcificTrip,
   updateTrip,
   deleteTrip,
+  tripReport,
 } = require("./trips.service");
 const enroll = require("../enroll/enroll.routes");
 const { validation } = require("../../utils/validation.meddle");
@@ -27,4 +28,5 @@ router
   .get(getٍSpcificTrip)
   .put(protectedRoutes, allowedTo("admin"), updateTrip)
   .delete(protectedRoutes, allowedTo("admin"), deleteTrip);
+  router.get('/report/:id',tripReport)
 module.exports = router;
