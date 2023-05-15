@@ -29,6 +29,7 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
     if (req.Student.cloudinary_id !== "default") {
       await deleteFromCloudinary(req.Student.cloudinary_id);
     }
+    console.log(result);
     updateData.image = result.secure_url
     updateData.cloudinary_id = result.public_id
   }
@@ -36,7 +37,8 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
     studentId,
     updateData,
     { new: true }
-  );
+    );
+    console.log(updatedStudent);
   if (!updatedStudent) {
     return res.status(404).json({ message: "Student not found" });
   }
