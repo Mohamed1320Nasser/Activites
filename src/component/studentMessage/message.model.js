@@ -7,7 +7,7 @@ const schema =new Schema({
 },
 student:{
     type:Types.ObjectId,
-    ref:'user'
+    ref:'student'
 }
 })
 module.exports = model("message", schema);
