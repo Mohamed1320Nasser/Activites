@@ -24,19 +24,19 @@ const bodyNotification = async (email, message) => {
     ,
     },
     (err, info) => {
-      if (err) console.log(err);
-      else console.log(info);
+      if (err) throw err;
     }
   );
 };
 exports.sendNotification = catchAsyncError(async (req, res, next) => {
   activityName = req.body.activity;
   const students = await getStudents(activityName);
-  if (students.length===0) return res.json.status(400).json("No Students enrlled in this activity");
+  if (students.length===0) return res.status(400).json("There are no students registered for this activity");
   students.forEach((ele)=>{
    bodyNotification(ele,req.body.message);
   })
-res.status(200).json(students)
+  console.log(students);
+       res.status(200).json(students)
 });
 
 
