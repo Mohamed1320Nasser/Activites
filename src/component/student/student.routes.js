@@ -23,7 +23,7 @@ const router = require("express").Router();
 // student profile routes
 router
   .get("/myProfile", protectedRoutes, getProfile)
-  .put("/myProfile/update", uploadSingleImage("image", "Student"), protectedRoutes, validation(updateProfileSchema), updateProfile)
+  .put("/myProfile/update", uploadSingleImage("image", "Student"), protectedRoutes, updateProfile)
   .put("/myProfile/changePassword", protectedRoutes, allowedTo("student"), validation(changePassSchema), ChangePass)
   .post('/resetPass', validation(restPassValidation), resetPass).post('/verifyCode', validation(verifyPassValidation), verifyCode)
 // admin routes
