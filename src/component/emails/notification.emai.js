@@ -16,12 +16,11 @@ const bodyNotification = async (email, message) => {
   // send mail with defined transport object
   await transporter.sendMail(
     {
-      from: ` Yeth Welfar <${process.env.EMAIL}>`, // sender address
+      from: ` Youth Welfare <${process.env.EMAIL}>`, // sender address
       to: email,
       subject: "Hello ✔",
       text: "Hello Dear",
       html: html(message)
-    
     ,
     },
     (err, info) => {
@@ -33,11 +32,11 @@ const bodyNotification = async (email, message) => {
 exports.sendNotification = catchAsyncError(async (req, res, next) => {
   activityName = req.body.activity;
   const students = await getStudents(activityName);
-  if (!students) return res.json.status(400).json("No Students enrlled in this activity");
+  if (students.length===0) return res.json.status(400).json("No Students enrlled in this activity");
   students.forEach((ele)=>{
    bodyNotification(ele,req.body.message);
   })
-res.status(200).json(await getStudents(activityName))
+res.status(200).json(students)
 });
 
 
