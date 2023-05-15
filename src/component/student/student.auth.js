@@ -79,10 +79,10 @@ exports.allowedTo = (...roles) => {
   });
 };
 exports.adminActive= catchAsyncError(async (req,res,next)=>{
-   await StudentModel.findByIdAndUpdate(req.Student._id,{active:true},{new:true});
+  const studentId = req.params.studentId;
+   await StudentModel.findByIdAndUpdate({studentId,active:true},{new:true});
    return res.status(200).json({message:" student is active successfully"})
 })
-
 exports.checkActiveStudent = catchAsyncError(async(req,res,next)=>{
   if(req.Student.active === false)  return next(new AppError("you not active from admin", 401));
   next()

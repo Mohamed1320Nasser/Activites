@@ -43,7 +43,7 @@ router
 router
   .post("/signUp", validation(studentSchema), SignUp)
   .post("/signin", validation(loginSchema), Signin)
-  .get("/active", adminActive);
+  .get("/active/:studentId", adminActive);
 router.post("/logout", Signout);
 
 module.exports = router;
