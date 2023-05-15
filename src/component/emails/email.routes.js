@@ -3,6 +3,6 @@ const { sendNotification } = require("./notification.emai");
 
 const router = require("express").Router();
 
-router.post("/", sendNotification);
+router.post("/", protectedRoutes, allowedTo("admin"), sendNotification);
 
 module.exports = router;

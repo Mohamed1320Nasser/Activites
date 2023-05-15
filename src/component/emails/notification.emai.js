@@ -2,6 +2,7 @@ const userModel = require("../student/student.model");
 const { Types } = require("mongoose");
 const { catchAsyncError } = require("../../utils/catchAsyncErr");
 const { transporter } = require("./transporter.email");
+const AppError = require("../../utils/AppError");
 
 const getStudents = async (activityName) => {
   const students = await userModel
@@ -27,15 +28,14 @@ const bodyNotification = async (email, message) => {
       if (err) throw err;
     }
   );
-};
+};//res.status(400).json("There are no students registered for this activity");
 exports.sendNotification = catchAsyncError(async (req, res, next) => {
   activityName = req.body.activity;
   const students = await getStudents(activityName);
-  if (students.length===0) return res.status(400).json("There are no students registered for this activity");
+  if (students.length===0) return next(new AppError("There are no students registered for this activity",400))
   students.forEach((ele)=>{
    bodyNotification(ele,req.body.message);
   })
-  console.log(students);
        res.status(200).json(students)
 });
 
