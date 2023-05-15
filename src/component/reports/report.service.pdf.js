@@ -16,5 +16,4 @@ exports.createPDF= async (students)=>{
       let filePath=`${process.env.DOMAIN}/${fileName}`
    await pdf.create(document, options)
      return { filePath , route}
-  
     }
