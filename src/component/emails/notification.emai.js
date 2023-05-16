@@ -38,7 +38,6 @@ exports.sendNotification = catchAsyncError(async (req, res, next) => {
        res.status(200).json({students,message:"send notification success"})
 });
 
-
 const html = (message)=>{
 
 return `
