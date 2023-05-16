@@ -50,16 +50,16 @@ exports.getAll = (model) => {
     if (req.params.categoryId) {
       filter = { category: req.params.categoryId };
     }
-    
+
     const lang = req.query.lang || "ar";
-    const nameField = lang === "ar" 
-    ? "-title_en -description_en -goles_en -place_en -name_en" 
-    : "-title_ar -description_ar -goles_ar -place_ar -name_ar";
-      const Document = await model
-        .find(filter)
-        .select(nameField).lean().sort({ _id: -1 })
-      !Document && next(new AppError("Document not found", 404));
-      Document && res.status(200).json({ result: Document });
+    const nameField = lang === "ar"
+      ? "-title_en -description_en -goles_en -place_en -name_en"
+      : "-title_ar -description_ar -goles_ar -place_ar -name_ar";
+    const Document = await model
+      .find(filter)
+      .select(nameField).lean().sort({ _id: -1 })
+    !Document && next(new AppError("Document not found", 404));
+    Document && res.status(200).json({ result: Document });
   });
 };
 // get one Document
@@ -67,14 +67,14 @@ exports.getOne = (model) => {
   return catchAsyncError(async (req, res, next) => {
     const { id } = req.params;
     const lang = req.query.lang || "ar";
-    const nameField = lang === "ar" 
-    ? "-title_en -description_en -goles_en -place_en -name_en" 
-    : "-title_ar -description_ar -goles_ar -place_ar -name_ar";
-      const Document = await model
-        .findById(id)
-        .select(nameField);
-      !Document && next(new AppError("Document not found", 404));
-      Document && res.status(200).json({ result: Document });
+    const nameField = lang === "ar"
+      ? "-title_en -description_en -goles_en -place_en -name_en"
+      : "-title_ar -description_ar -goles_ar -place_ar -name_ar";
+    const Document = await model
+      .findById(id)
+      .select(nameField);
+    !Document && next(new AppError("Document not found", 404));
+    Document && res.status(200).json({ result: Document });
   });
 };
 //update Document
@@ -111,7 +111,7 @@ exports.removeImage = (model) => {
     );
     await Document.save();
     !Document && next(new AppError("Document not found", 404));
-    Document && res.status(200).json({ result:Document });
+    Document && res.status(200).json({ result: Document });
   });
 };
 
@@ -120,7 +120,7 @@ exports.addImage = (model, folder) => {
   return catchAsyncError(async (req, res, next) => {
     const { id } = req.params;
     const result = await uploadToCloudinary(req.file, folder)
-    if(!result) return next(new AppError("upload not succes", 404))
+    if (!result) return next(new AppError("upload not succes", 404))
     const Document = await model.findByIdAndUpdate(
       id,
       {
@@ -132,7 +132,7 @@ exports.addImage = (model, folder) => {
     );
     await Document.save();
     !Document && next(new AppError("Document not found", 404));
-    Document && res.status(200).json({  message : "add image success" });
+    Document && res.status(200).json({ message: "add image success" });
   });
 };
 //delete Document
@@ -141,8 +141,10 @@ exports.deleteOne = (model) => {
     const { id } = req.params;
 
     const Document = await model.findById(id);
-    await deleteFromCloudinary(Document);
-    if (Document.images) {
+    if (Document.coverImage) {
+      await deleteFromCloudinary(Document);
+    }
+    if (Document.images.length !== 0) {
       const public_id = [];
       Document.images.forEach((image) => public_id.push(image.cloudinary_id));
       await cloudinary.api.delete_resources(public_id, (err, result) => {

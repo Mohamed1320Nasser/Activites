@@ -27,11 +27,14 @@ const bodyNotification = async (email, message) => {
 exports.sendNotification = catchAsyncError(async (req, res, next) => {
   activityName = req.body.activity;
   const students = await getStudents(activityName);
-  if (students.length === 0) return next(new AppError("There are no students registered for this activity",400))
-  students.forEach((ele)=>{
-   bodyNotification(ele,req.body.message);
-  })
-       res.status(200).json(students)
+  if (students.length === 0) {
+    return next(new AppError("There are no students registered for this activity", 400));
+  }
+  for (const student of students) {
+    const { email } = student;
+    await bodyNotification(email, req.body.message);
+  }
+       res.status(200).json({message:"send notification success"})
 });
 
 

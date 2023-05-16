@@ -54,6 +54,7 @@ exports.enrollActivity = catchAsyncError(async (req, res, next) => {
       const message = req.query.lang == "en" 
       ? 'you enroll more than 3 activities' 
       : ' لا يمكن التسجيل في اكثر من 3 انشطة'
+      res.status(200).json({ message });
     }
   }
 })
@@ -120,29 +121,46 @@ exports.cancel = catchAsyncError(async (req, res, next) => {
 
 // regester in trips /////////////////////////////
 exports.enrollTrip = catchAsyncError(async (req, res, next) => {
-  const tripsId = Types.ObjectId(req.params.id);
+  const tripsId =mongoose.Types.ObjectId(req.params.id);
   const studentId = req.Student._id;
-  const student= await  StudentModel.findOneAndUpdate(
-      { _id: studentId },
-      { $addToSet: { trip: tripsId } },
-      { new: true, lean: true, select: 'trip' }
-    )
+  
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-    const trip= await  tripsModel.findOneAndUpdate(
-      { _id: tripsId },
-      { $inc: { numRecorded: 1 } },
-      { new: true, lean: true, select: 'numRecorded' }
-    )
-    console.log(trip);
+  try {
+   
+    const student= await StudentModel.findOneAndUpdate(
+        { _id: studentId },
+        { $addToSet: { trip: tripsId } },
+        { new: true, lean: true, select: 'trip', session }
+      )
+    const trip = await tripsModel.findOneAndUpdate(
+        { _id: tripsId },
+        { $inc: { numRecorded: 1 } },
+        { new: true, lean: true, select: 'numRecorded', session }
+      )
+     console.log(student);
+     console.log(trip);
+    if (!student) {
+      await session.abortTransaction();
+      return next(new AppError("Student not found", 404));
+    }
+
+    if (!trip) {
+      await session.abortTransaction();
+      return next(new AppError("Trip not found", 404));
+    }
+    await session.commitTransaction();
     console.log(student);
-
-  if (!student) {
-    return next(new AppError("Student not found", 404));
+     console.log(trip);
+    const message = req.query.lang == "en" ? 'enroll success' : 'تم التسجبل بنجاح';
+    res.status(200).json({ message  });
+   
+  } catch (error) {
+    await session.abortTransaction();
+    next(error);
+  } finally {
+    session.endSession();
   }
-  if (!trip) {
-    return next(new AppError("Trip not found", 404));
-  }
-  console.log(trip);
-  res.status(200).json({ message: "success", result: student });
 });
 
