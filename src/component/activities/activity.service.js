@@ -63,9 +63,6 @@ exports.rateActivity = catchAsyncError(async (req, res, next) => {
   }
 });
 
-
-
-
 exports.actvityReport=catchAsyncError(async (req,res,next)=>{
   const activityId=req.params.id
   const students = await userModel
@@ -74,7 +71,6 @@ exports.actvityReport=catchAsyncError(async (req,res,next)=>{
   }).lean()
 if (students.length === 0) return res.status(400).json("no students enrolled in this activity") 
 const result = await createPDF(students)
-console.log(result);
 deleteFileAfterDelay(result.route, 1 * 60 * 60 * 1000); // Delete file after 1 hour
     res.status(200).json(result.filePath)
 })
