@@ -50,13 +50,14 @@ exports.getAll = (model) => {
     if (req.params.categoryId) {
       filter = { category: req.params.categoryId };
     }
+    
     const lang = req.query.lang || "ar";
     const nameField = lang === "ar" 
     ? "-title_en -description_en -goles_en -place_en -name_en" 
     : "-title_ar -description_ar -goles_ar -place_ar -name_ar";
       const Document = await model
         .find(filter)
-        .select(nameField);
+        .select(nameField).lean().sort({ _id: -1 })
       !Document && next(new AppError("Document not found", 404));
       Document && res.status(200).json({ result: Document });
   });
