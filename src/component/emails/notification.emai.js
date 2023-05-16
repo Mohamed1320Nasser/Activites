@@ -5,9 +5,10 @@ const { transporter } = require("./transporter.email");
 const AppError = require("../../utils/AppError");
 
 const getStudents = async (activityId) => {
+	console.log("ctivivty id",activityId);
 	const students = await userModel
 	  .find({
-		activity: Types.ObjectId(activityId),
+		activity: activityId
 	  })
 	  .select("email -_id");
 	  console.log('2 get students', students);

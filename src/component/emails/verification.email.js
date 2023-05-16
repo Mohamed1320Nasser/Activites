@@ -6,12 +6,11 @@ exports.sendEmail = async (user, host) => {
   // send mail with defined transport object
   await transporter.sendMail(
     {
-      from: process.env.EMAIL, // sender address
+      from: ` Youth Welfare <${process.env.EMAIL}>`, // sender address
       to: `Yath Welfare <${user.email}>`,
       subject: `Hello ${user.fullName}`, // Subject line,
       text: "Hello ",
       html:`
-      
       <body style=" margin: 0; background-color: #cccccc;">
   <center class="wrapper" style=" width: 100%; table-layout: fixed; padding-bottom: 60px;">
 
