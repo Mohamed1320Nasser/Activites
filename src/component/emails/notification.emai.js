@@ -33,6 +33,8 @@ const bodyNotification = async (email, message) => {
 exports.sendNotification = catchAsyncError(async (req, res, next) => {
 	console.log("1 start");
 	const activityId = req.body.activity;
+	console.log(activityId);
+	console.log(req.body.message);
 	const students = await getStudents(activityId);
 	console.log("3",students);
 	if (students === null) {
