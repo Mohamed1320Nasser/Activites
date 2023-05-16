@@ -22,7 +22,7 @@ const bodyNotification = async (fullName,email, message) => {
     {
       from: ` Youth Welfare <${process.env.EMAIL}>`, // sender address
       to: email,
-      subject: "Hello ✔",
+      subject: "Thebes Acadmy",
       text: "Hello Dear",
       html: html(message,fullName)
     }
@@ -32,7 +32,7 @@ exports.sendNotification = catchAsyncError(async (req, res, next) => {
 	const activityId = req.body.activity;
 	const students = await getStudents(activityId);
 	if (students === null) {
-	  return res.status(400).json({ error: "No students enrolled for this activity" });
+	  return res.status(400).json({ message: "No students enrolled for this activity" });
 	}
 	for (const student of students) {
 	  const  email  = student.email;
@@ -64,7 +64,7 @@ style="
   "
 >
   <div class="header" style="text-align: center; margin-bottom: 30px">
-	<h1 style="color: #333333; margin: 0">Notification Email</h1>
+	<h1 style="color: #333333; margin: 0">Youth Welfare Notification</h1>
   </div>
   <div
 	class="message"
