@@ -5,20 +5,18 @@ const { transporter } = require("./transporter.email");
 const AppError = require("../../utils/AppError");
 
 const getStudents = async (activityId) => {
-	console.log("ctivivty id",activityId);
 	const students = await userModel
 	  .find({
 		activity: activityId
 	  })
-	  .select("email -_id");
-	  console.log('2 get students', students);
+	  .select("email fullName -_id");
 	if (students.length === 0) {
 	  return null;
 	}
   
 	return students;
   };
-const bodyNotification = async (email, message) => {
+const bodyNotification = async (fullName,email, message) => {
   // send mail with defined transport object
   await transporter.sendMail(
     {
@@ -26,28 +24,24 @@ const bodyNotification = async (email, message) => {
       to: email,
       subject: "Hello ✔",
       text: "Hello Dear",
-      html: html(message)
+      html: html(message,fullName)
     }
   );
 };//res.status(400).json("There are no students registered for this activity");
 exports.sendNotification = catchAsyncError(async (req, res, next) => {
-	console.log("1 start");
 	const activityId = req.body.activity;
-	console.log(activityId);
-	console.log(req.body.message);
 	const students = await getStudents(activityId);
-	console.log("3",students);
 	if (students === null) {
 	  return res.status(400).json({ error: "No students enrolled for this activity" });
 	}
 	for (const student of students) {
-	  const { email } = student;
-	  await bodyNotification(email, req.body.message);
-	  console.log(email,req.body.message);
+	  const  email  = student.email;
+	  const  fullName  = student.fullName;
+	  await bodyNotification(fullName,email, req.body.message);
 	}
        res.status(200).json({students,message:"send notification success"})
 });
-const html = (message)=>{
+const html = (message,fullName)=>{
 
 return `
 
@@ -81,7 +75,7 @@ style="
 	  border: 1px solid #dddddd;
 	"
   >
-	<p>Hello, [ Deare  student]!</p>
+	<p>Hello  ${fullName}</p>
 	<p>
 	${message}
 	</p>
