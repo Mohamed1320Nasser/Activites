@@ -5,5 +5,5 @@ const { enrollActivity, cancel, enrollTrip } = require("./enroll.services");
 const router = require("express").Router({mergeParams: true});
     router.get("/activity",protectedRoutes,checkActiveStudent,enrollActivity)
     router.get("/cancel",protectedRoutes,cancel)
-    router.get("/trip/:id",protectedRoutes,checkActiveStudent,enrollTrip)
+    router.get("/trip",protectedRoutes,checkActiveStudent,enrollTrip)
 module.exports = router;
