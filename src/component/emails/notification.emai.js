@@ -10,7 +10,7 @@ const getStudents = async (activityName) => {
       activity: Types.ObjectId(activityName),
     })
     .select("email -_id");
-	if(students.length===0) return false
+	// if(students.length===0) return false
     return students;
 };
 const bodyNotification = async (email, message) => {
@@ -28,9 +28,9 @@ const bodyNotification = async (email, message) => {
 exports.sendNotification = catchAsyncError(async (req, res, next) => {
   activityName = req.body.activity;
   const students = await getStudents(activityName);
-  if (students===false) {
-    return next(new AppError("nod student enrolled", 400));
-  }
+//   if (students===false) {
+//     return next(new AppError("nod student enrolled", 400));
+//   }
   for (const student of students) {
     const { email } = student;
     await bodyNotification(email, req.body.message);
