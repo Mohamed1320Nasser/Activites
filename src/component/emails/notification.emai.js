@@ -4,15 +4,19 @@ const { catchAsyncError } = require("../../utils/catchAsyncErr");
 const { transporter } = require("./transporter.email");
 const AppError = require("../../utils/AppError");
 
-const getStudents = async (activityName) => {
-  const students = await userModel
-    .find({
-      activity: Types.ObjectId(activityName),
-    })
-    .select("email -_id");
-	// if(students.length===0) return false
-    return students;
-};
+const getStudents = async (activityId) => {
+	const students = await userModel
+	  .find({
+		activity: Types.ObjectId(activityId),
+	  })
+	  .select("email -_id");
+	  console.log('2 get students', students);
+	if (students.length === 0) {
+	  return null;
+	}
+  
+	return students;
+  };
 const bodyNotification = async (email, message) => {
   // send mail with defined transport object
   await transporter.sendMail(
@@ -26,18 +30,20 @@ const bodyNotification = async (email, message) => {
   );
 };//res.status(400).json("There are no students registered for this activity");
 exports.sendNotification = catchAsyncError(async (req, res, next) => {
-  activityName = req.body.activity;
-  const students = await getStudents(activityName);
-//   if (students===false) {
-//     return next(new AppError("nod student enrolled", 400));
-//   }
-  for (const student of students) {
-    const { email } = student;
-    await bodyNotification(email, req.body.message);
-  }
+	console.log("1 start");
+	const activityId = req.body.activity;
+	const students = await getStudents(activityId);
+	console.log("3",students);
+	if (students === null) {
+	  return res.status(400).json({ error: "No students enrolled for this activity" });
+	}
+	for (const student of students) {
+	  const { email } = student;
+	  await bodyNotification(email, req.body.message);
+	  console.log(email,req.body.message);
+	}
        res.status(200).json({students,message:"send notification success"})
 });
-
 const html = (message)=>{
 
 return `
