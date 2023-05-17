@@ -5,7 +5,6 @@ const crypto = require("crypto");
 const { catchAsyncError } = require("../../utils/catchAsyncErr");
 const AppError = require("../../utils/AppError");
 const { sendEmail } = require("../emails/verification.email");
-const { uploadToCloudinary } = require("../../utils/cludinary");
 
 module.exports.SignUp = catchAsyncError(async (req, res, next) => {
   const IsStudent = await StudentModel.findOne({ email: req.body.email });
@@ -14,7 +13,6 @@ module.exports.SignUp = catchAsyncError(async (req, res, next) => {
   const Student = new StudentModel(req.body);
   await Student.save();
   
-  console.log(process.env.DOMAIN);
   sendEmail(Student, process.env.DOMAIN);
   res
     .status(200)
@@ -30,9 +28,9 @@ exports.verifyEmail = catchAsyncError(async (req, res, next) => {
       emailToken: null,
       Isverified: true,
     });
-    res.status(200).json({message:"email verified",status:true});
+    return res.status(200).json({message:"email verified",status:true});
   } else {
-    res.status(200).json({message:"email verified",status:false});
+    return res.status(200).json({message:"email verified",status:false});
   }
 });
 module.exports.Signin = catchAsyncError(async (req, res, next) => {
@@ -46,14 +44,14 @@ module.exports.Signin = catchAsyncError(async (req, res, next) => {
     { StudentId: Student._id, name: Student.name },
     process.env.secrit_key
   );
-  res.status(200).json({ message:"Login success",token,role:Student.role });
+  return res.status(200).json({ message:"Login success",token,role:Student.role });
 });
 exports.Signout = catchAsyncError(async (req, res, next) => {
-  res.clearCookie("token");
+ res.clearCookie("token");
   const expiredToken = jwt.sign({}, process.env.secrit_key, {
     expiresIn: "10",
   });
-  res.status(200).json({ message: "logged out",status:true  });
+  return res.status(200).json({ message: "logged out",status:true  });
 });
 
 exports.protectedRoutes = catchAsyncError(async (req, res, next) => {

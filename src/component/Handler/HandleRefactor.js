@@ -40,7 +40,7 @@ exports.createOne = (model, fieldName) => {
     }
     const document = new model(req.body);
     await document.save();
-    res.status(200).json(document);
+    return res.status(200).json(document);
   });
 };
 // get all Documents

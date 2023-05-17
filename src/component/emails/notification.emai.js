@@ -27,19 +27,19 @@ const bodyNotification = async (fullName,email, message) => {
       html: html(message,fullName)
     }
   );
-};//res.status(400).json("There are no students registered for this activity");
+};
 exports.sendNotification = catchAsyncError(async (req, res, next) => {
 	const activityId = req.body.activity;
 	const students = await getStudents(activityId);
 	if (students === null) {
-	  return res.status(400).json({ message: "No students enrolled for this activity" });
+	  return res.status(400).json({ message: "Not Found Student " });
 	}
 	for (const student of students) {
 	  const  email  = student.email;
 	  const  fullName  = student.fullName;
 	  await bodyNotification(fullName,email, req.body.message);
 	}
-       res.status(200).json({students,message:"send notification success"})
+    return res.status(200).json({students,message:"send notification success"})
 });
 const html = (message,fullName)=>{
 

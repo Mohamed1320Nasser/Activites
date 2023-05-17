@@ -43,7 +43,7 @@ exports.enrollActivity = catchAsyncError(async (req, res, next) => {
         ]);
         await session.commitTransaction();
         const message = req.query.lang == "en" ? 'enroll success' : 'تم التسجبل بنجاح';
-        res.status(200).json({ message });
+        return res.status(200).json({ message });
       } catch (error) {
         await session.abortTransaction();
         return next(error);
@@ -54,7 +54,7 @@ exports.enrollActivity = catchAsyncError(async (req, res, next) => {
       const message = req.query.lang == "en" 
       ? 'you enroll more than 3 activities' 
       : ' لا يمكن التسجيل في اكثر من 3 انشطة'
-      res.status(200).json({ message });
+      return res.status(200).json({ message });
     }
   }
 })
@@ -139,8 +139,6 @@ exports.enrollTrip = catchAsyncError(async (req, res, next) => {
         { $inc: { numRecorded: 1 } },
         { new: true, lean: true, select: 'numRecorded', session }
       )
-     console.log(student);
-     console.log(trip);
     if (!student) {
       await session.abortTransaction();
       return next(new AppError("Student not found", 404));
@@ -151,10 +149,8 @@ exports.enrollTrip = catchAsyncError(async (req, res, next) => {
       return next(new AppError("Trip not found", 404));
     }
     await session.commitTransaction();
-    console.log(student);
-     console.log(trip);
     const message = req.query.lang == "en" ? 'enroll success' : 'تم التسجبل بنجاح';
-    res.status(200).json({ message  });
+    return res.status(200).json({ message  });
    
   } catch (error) {
     await session.abortTransaction();

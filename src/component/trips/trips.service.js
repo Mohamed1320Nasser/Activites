@@ -12,7 +12,6 @@ exports.getTrips = refactor.getAll(TripModel);
 
 exports.getٍSpcificTrip = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  console.log(req.query);
   if (req.query.lang == "en") {
     const Trip = await TripModel.findById(id).select(
       "-title_ar -description_ar -place_ar"

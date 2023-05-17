@@ -8,7 +8,7 @@ module.exports.creatStudent = catchAsyncError(async (req, res, next) => {
   if (findStudent) return next(new AppError("Student already exists", 500));
   const Student = new StudentModel(req.body);
   await Student.save();
-  res.status(200).json(Student);
+  return res.status(200).json(Student);
 });
 exports.getStudents = catchAsyncError(async (req, res, next) => {
   const lang = req.query.lang || "ar";
@@ -24,7 +24,7 @@ exports.getStudents = catchAsyncError(async (req, res, next) => {
     return next(new AppError("Students not found", 404));
   }
 
-  res.status(200).json({ result: Student });
+  return res.status(200).json({ result: Student });
 });
 
 exports.getٍSpcificStudent = catchAsyncError(async (req, res, next) => {
@@ -41,7 +41,7 @@ exports.getٍSpcificStudent = catchAsyncError(async (req, res, next) => {
   if (!Student || Student.length === 0) {
     return next(new AppError("Students not found", 404));
   }
-  res.status(200).json({ result: Student });
+  return res.status(200).json({ result: Student });
 });
 
 // update the Student {description and name} of youth Student
@@ -64,4 +64,3 @@ exports.deleteStudent = catchAsyncError(async (req, res) => {
   Student && res.status(200).json("deleted");
 });
 
-// 01 

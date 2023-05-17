@@ -15,7 +15,7 @@ exports.getProfile = catchAsyncError(async (req, res, next) => {
   if (!Student) {
     return next(new AppError("Student not found", 404));
   }
-  res.status(200).json({ Student });
+  return res.status(200).json({ Student });
 });
 exports.updateProfile = catchAsyncError(async (req, res, next) => {
   const { fullName, phone } = req.body
@@ -49,7 +49,7 @@ module.exports.ChangePass = catchAsyncError(async (req, res, next) => {
   if (match) {
     let hash = await bcrypt.hash(newPassword, Number(process.env.saltRounds));
     await StudentModel.findByIdAndUpdate(req.Student._id, { password: hash });
-    res.status(200).json({ message: " change password is succes" });
+    return  res.status(200).json({ message: " change password is succes" });
   } else {
     return next(new AppError("Old password is incorrect", 401));
   }
@@ -90,7 +90,7 @@ exports.resetPass = catchAsyncError(async (req, res, next) => {
       else return res.status(200).json({ message: "Verification code sent" });
     });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -116,7 +116,7 @@ exports.verifyCode = catchAsyncError(async (req, res, next) => {
     await user.save();
 
     // Return a success message
-    res.status(200).json({ message: "Password reset successful" });
+    return  res.status(200).json({ message: "Password reset successful" });
   } catch (error) {
     console.log(error);
   }
