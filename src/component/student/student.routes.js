@@ -15,7 +15,8 @@ const {
   allowedTo,
   adminActive,
 } = require("./student.auth");
-const { getProfile, updateProfile, ChangePass, resetPass, verifyCode } = require("./student.profile");
+const {checkImageUpload} = require('../../utils/uploadFile')
+const { getProfile, updateProfile, ChangePass, resetPass, verifyCode, updatePic } = require("./student.profile");
 const { validation } = require("../../utils/validation.meddle");
 const { loginSchema, changePassSchema, updateProfileSchema, restPassValidation, verifyPassValidation, studentSchema } = require("./student.validate");
 const router = require("express").Router();
@@ -23,7 +24,8 @@ const router = require("express").Router();
 // student profile routes
 router
   .get("/myProfile", protectedRoutes, getProfile)
-  .put("/myProfile/update", uploadSingleImage("image", "Student"), protectedRoutes, updateProfile)
+  .put("/myProfile/update", protectedRoutes,validation(updateProfileSchema), updateProfile)
+  .put("/myProfile/update/image", protectedRoutes, uploadSingleImage("image"),checkImageUpload, updatePic)
   .put("/myProfile/changePassword", protectedRoutes, allowedTo("student"), validation(changePassSchema), ChangePass)
   .post('/resetPass', validation(restPassValidation), resetPass).post('/verifyCode', validation(verifyPassValidation), verifyCode)
 // admin routes

@@ -43,6 +43,23 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
   return res.status(200).json({ message: "Profile updated successfully" });
 
 });
+exports.updatePic= catchAsyncError(async (req, res, next) => {
+  const studentId = req.Student?._id;
+  if (!studentId) return res.status(400).json({ message: "Invalid student ID" });
+  const result = await uploadToCloudinary(req.file)
+  if (req.Student.cloudinary_id !== "default") {
+    await deleteFromCloudinary(req.Student.cloudinary_id);
+  }
+  req.body.image = result.secure_url
+  req.body.cloudinary_id = result.public_id
+  const updateStudentPic = await StudentModel.findByIdAndUpdate(
+    studentId,
+    req.body,
+    { new: true }
+    );
+    if (!updateStudentPic) return res.status(404).json({ message: "Student not found" });
+    return res.status(200).json({ message: "Profile Image updated successfully" });
+})
 module.exports.ChangePass = catchAsyncError(async (req, res, next) => {
   const { oldPassword, newPassword } = req.body;
   let match = await bcrypt.compare(oldPassword, req.Student.password);

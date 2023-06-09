@@ -66,17 +66,13 @@ exports.loginSchema = { body: joi
       body:joi.object()
       .required()
       .keys({
-         fullName: joi.string().required().min(3).max(50).messages({
-            "any.required": "studentName field is required",
+         fullName: joi.string().min(3).max(50).messages({
             "any.empty": "empty studentName is not acceptable",}),
-            phone: joi.number().required().messages({
-               "any.required": "student phone field is required",
+            phone: joi.number().messages({
                "any.empty": "empty student phone is not acceptable",
              }),
-             image: joi.string(),
       })
      }
-
    exports.restPassValidation={
       body:joi.object()
       .required()
