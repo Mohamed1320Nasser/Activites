@@ -3,7 +3,8 @@ const { catchAsyncError } = require("../../utils/catchAsyncErr");
 const TripModel = require("./trips.model");
 const refactor=require("../Handler/HandleRefactor");
 const { Types } = require("mongoose");
-const userModel = require('../student/student.model')
+const userModel = require('../student/student.model');
+const { createPDF } = require("../reports/report.service.pdf");
 
 // to creat Trip
 module.exports.creatTrip = refactor.createOne(TripModel,"trips");
