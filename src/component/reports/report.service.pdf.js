@@ -13,13 +13,7 @@ exports.createPDF = async (students) => {
     path: route
   };
   let filePath = `${process.env.DOMAIN}/${fileName}`
-  await pdf.create(document, options, {
-    childProcessOptions: {
-      env: {
-        OPENSSL_CONF: '/dev/null',
-      },
-    }
-  })
+  await pdf.create(document, options,)
   return { filePath, route }
 }
   /*
