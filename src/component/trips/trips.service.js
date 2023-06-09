@@ -54,7 +54,5 @@ exports.tripReport=catchAsyncError(async (req,res,next)=>{
   }).lean()
 if (students.length === 0) return res.status(400).json("no students enrolled in this activity") 
 const result = await createPDF(students)
-fs.unlinkSync(result.route)
-deleteFileAfterDelay(result.route, 0,5 * 60 * 60 * 1000); // Delete file after 1 hour
     res.status(200).json(result.filePath)
 })
