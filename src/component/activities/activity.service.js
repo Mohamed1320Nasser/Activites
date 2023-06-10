@@ -69,7 +69,7 @@ exports.actvityReport=catchAsyncError(async (req,res,next)=>{
   .find({
     activity: Types.ObjectId(activityId),
   }).lean()
-if (students.length === 0) return res.status(400).json({message:"no students enrolled in this activity"}) 
+if (students.length === 0) return res.status(400).json({message:"No students are currently enrolled in this activity."}) 
 const result = await createPDF(students )
 return  res.status(200).json(result.filePath)
 })

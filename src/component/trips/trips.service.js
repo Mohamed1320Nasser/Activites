@@ -54,7 +54,7 @@ exports.tripReport=catchAsyncError(async (req,res,next)=>{
   .find({
     trip: Types.ObjectId(tripId),
   }).lean()
-if (students.length === 0) return res.status(400).json({message:"no students enrolled in this trip"}) 
+if (students.length === 0) return res.status(400).json({message:"No students are currently enrolled in this trip."}) 
 const result = await createPDF(students)
     res.status(200).json(result.filePath)
 })
