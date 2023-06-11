@@ -26,6 +26,7 @@ const schema = Schema(
       required: [true, "user email requires"],
       trim: true,
       unique: [true, "user email unique"],
+      index: true,
     },
     phone: {
       type: String,
@@ -61,12 +62,14 @@ const schema = Schema(
       {
         type: Types.ObjectId,
         ref: "activity",
+        index: true,
       },
     ],
     trip: [
       {
         type: Types.ObjectId,
         ref: "trip",
+        index: true,
       },
     ],
 
