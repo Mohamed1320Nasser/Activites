@@ -1,63 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student Lis</title>
-    <style>
-      table {
-        margin: 0 auto;
-        size: 600px;
-        border-collapse: collapse;
-        font-family: Arial, sans-serif;
-      }
-      
-      th, td {
-        text-align: center;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-      }
-      
-      th {
-        background-color: #f2f2f2;
-      }
-      
-      td:nth-child(even) {
-        background-color: #f9f9f9;
-      }
-      
-      h1 {
-        text-align: center;
-        color: #333;
-        font-size: 25px;
-      }
-    </style>
-  </head>
-  <body>
-    
-    <h1>Student List</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Code</th>
-          <th>Specialization</th>
-          <th>Phone</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each students}}
-        <tr>
-          <td>{{this.counter}}</td>
-          <td>{{this.fullName}}</td>
-          <td>{{this.code}}</td>
-          <td>{{this.Specialization}}</td>
-          <td>{{this.phone}}</td>
-        </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      font-size: 25px;
+    }
+
+    table {
+      margin: 0 auto;
+      width: 80%;
+      border-collapse: collapse;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    tbody tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    td:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Student List</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Code</th>
+        <th>Specialization</th>
+        <th>Phone</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each students}}
+      <tr>
+        <td>{{this.counter}}</td>
+        <td>{{this.fullName}}</td>
+        <td>{{this.code}}</td>
+        <td>{{this.Specialization}}</td>
+        <td>{{this.phone}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</body>
 </html>
