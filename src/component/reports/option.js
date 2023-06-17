@@ -22,7 +22,14 @@ exports.options = {
         },
     },
 };
-
+/*
+first name 
+last name 
+hospital name
+address
+username
+password
+*/ 
 
 
 
