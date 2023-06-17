@@ -18,7 +18,7 @@ exports.options = {
     footer: {
         height: "20mm",
         contents: {
-            default: '<div style="text-align: left; color: #000; font-size: 20px;">Page {{page}} of {{pages}}</div>',
+            default: '<div style="text-align: left; color: #000; font-size: 15px;">Page {{page}} of {{pages}}</div>',
         },
     },
 };
